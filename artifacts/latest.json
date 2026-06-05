@@ -1,0 +1,48 @@
+{
+  "latestVersion": "0.1.0",
+  "latestStable": "0.1.0",
+  "releasedAt": "2026-06-02T11:04:54.581Z",
+  "releaseUrl": "https://github.com/postmesh-dev/postmesh/releases/tag/v0.1.0",
+  "assets": {
+    "linux-x64": {
+      "name": "postmesh-0.1.0-linux-x64.tar.gz",
+      "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.1.0/postmesh-0.1.0-linux-x64.tar.gz",
+      "sha256": "065be9f4e8e5097b3afc26d6210c84a61e4098f7c649183dde4cf3d6c7393aae"
+    },
+    "linux-arm64": {
+      "name": "postmesh-0.1.0-linux-arm64.tar.gz",
+      "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.1.0/postmesh-0.1.0-linux-arm64.tar.gz",
+      "sha256": "ed87e799e4a74ceb496eccb44a39b9e915023a6c79ee9ba1912718a8f2dc1b21"
+    },
+    "linux-x64-musl": {
+      "name": "postmesh-0.1.0-linux-x64-musl.tar.gz",
+      "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.1.0/postmesh-0.1.0-linux-x64-musl.tar.gz",
+      "sha256": "1ce741db5ce918c32091a10561136b318f8326ca6b8d1124aa25b73ed78e57f7"
+    },
+    "linux-arm64-musl": {
+      "name": "postmesh-0.1.0-linux-arm64-musl.tar.gz",
+      "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.1.0/postmesh-0.1.0-linux-arm64-musl.tar.gz",
+      "sha256": "b44ed523f497616e502f22ff6c085444af33f1086cfa3b58a8cb2626317b549f"
+    },
+    "windows-x64": {
+      "name": "postmesh-0.1.0-windows-x64.zip",
+      "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.1.0/postmesh-0.1.0-windows-x64.zip",
+      "sha256": "d1a6be88f1d8149a2ef5889485ebd214cfe6ccb3d677d1fd757715dc815ea6da"
+    },
+    "windows-arm64": {
+      "name": "postmesh-0.1.0-windows-arm64.zip",
+      "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.1.0/postmesh-0.1.0-windows-arm64.zip",
+      "sha256": "e43cd0039428254465ffc0b92dab77e3f004badd113224cbd183faa61a22cd3f"
+    },
+    "darwin-x64": {
+      "name": "postmesh-0.1.0-darwin-x64.tar.gz",
+      "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.1.0/postmesh-0.1.0-darwin-x64.tar.gz",
+      "sha256": "406a4e035978f0c740950f1607472ff086857bc47c8c15653240a0cae43c8f59"
+    },
+    "darwin-arm64": {
+      "name": "postmesh-0.1.0-darwin-arm64.tar.gz",
+      "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.1.0/postmesh-0.1.0-darwin-arm64.tar.gz",
+      "sha256": "eb2947c57908b2e193bcf38bab50cd136019ebd3640f01fb0f9bd0ed617ac80b"
+    }
+  }
+}
