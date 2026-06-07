@@ -1,0 +1,7 @@
+{
+  "version": "0.2.0-rc.6",
+  "releasedAt": "2026-06-07T07:51:29.000Z",
+  "assets": {
+    "*": { "name": "postmesh-0.2.0-rc.6-*", "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.2.0-rc.6/postmesh-0.2.0-rc.6-*", "sha256": "" },
+  }
+}
