@@ -32,8 +32,9 @@ API_HEADER="Accept: application/vnd.github.v3.raw"
 if [ "$VERSION" = "latest" ]; then
   MANIFEST=$(curl -fsSL -H "$API_HEADER" "https://api.github.com/repos/${REPO}/contents/artifacts/latest.json" 2>/dev/null || curl -fsSL "https://raw.githubusercontent.com/${REPO}/main/artifacts/latest.json")
   DESIRED_VERSION=$(echo "$MANIFEST" | sed -n 's/.*"latestStable": *"\([^"]*\)".*/\1/p')
-  if [ -z "$DESIRED_VERSION" ] || [ "$DESIRED_VERSION" = "0.0.0" ]; then
-    DESIRED_VERSION=$(echo "$MANIFEST" | sed -n 's/.*"latestVersion": *"\([^"]*\)".*/\1/p')
+  if [ -z "$DESIRED_VERSION" ]; then
+    echo "No stable release available. Use INSTALL_VERSION=<version> to install a specific release candidate." >&2
+    exit 1
   fi
 else
   MANIFEST=$(curl -fsSL -H "$API_HEADER" "https://api.github.com/repos/${REPO}/contents/artifacts/releases/${VERSION}.json" 2>/dev/null || curl -fsSL "https://raw.githubusercontent.com/${REPO}/main/artifacts/releases/${VERSION}.json")
