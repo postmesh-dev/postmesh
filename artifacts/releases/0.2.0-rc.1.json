@@ -1,8 +1,14 @@
 {
-  "latestVersion": "0.2.0-rc.1",
-  "latestStable": "0.2.0-rc.1",
+  "version": "0.2.0-rc.1",
+  "postmeshVersion": "0.2.0-rc.1",
   "releasedAt": "2026-06-07T06:08:04.625Z",
-  "releaseUrl": "https://github.com/postmesh-dev/postmesh/releases/tag/v0.2.0-rc.1",
+  "sourceRevision": "b313461374bdb37b0f7efe8767a95afe814d4bb8",
+  "managedRuntime": {
+    "llamaCpp": "b9439"
+  },
+  "defaultModel": {
+    "id": "qwen3-1.7b"
+  },
   "assets": {
     "linux-x64": {
       "name": "postmesh-0.2.0-rc.1-linux-x64.tar.gz",
