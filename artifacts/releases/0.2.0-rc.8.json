@@ -1,7 +1,14 @@
 {
-  "latestVersion": "0.2.0-rc.8",
+  "version": "0.2.0-rc.8",
+  "postmeshVersion": "0.2.0-rc.8",
   "releasedAt": "2026-06-07T12:26:48.034Z",
-  "releaseUrl": "https://github.com/postmesh-dev/postmesh/releases/tag/v0.2.0-rc.8",
+  "sourceRevision": "25d3c38664843d0b0a736725b3b4bccac0031f81",
+  "managedRuntime": {
+    "llamaCpp": "b9439"
+  },
+  "defaultModel": {
+    "id": "qwen3-1.7b"
+  },
   "assets": {
     "linux-x64": {
       "name": "postmesh-0.2.0-rc.8-linux-x64.tar.gz",
