@@ -31,7 +31,7 @@ API_HEADER="Accept: application/vnd.github.v3.raw"
 
 if [ "$VERSION" = "latest" ]; then
   MANIFEST=$(curl -fsSL -H "$API_HEADER" "https://api.github.com/repos/${REPO}/contents/artifacts/latest.json" 2>/dev/null || curl -fsSL "https://raw.githubusercontent.com/${REPO}/main/artifacts/latest.json")
-  DESIRED_VERSION=$(echo "$MANIFEST" | sed -n 's/.*"latestStable": *"\([^"]*\)".*/\1/p')
+  DESIRED_VERSION=$(echo "$MANIFEST" | grep -o '"latestStable"[^,]*' | sed 's/.*"\([^"]*\)"$/\1/')
   if [ -z "$DESIRED_VERSION" ]; then
     echo "No stable release available. Use INSTALL_VERSION=<version> to install a specific release candidate." >&2
     exit 1
@@ -43,7 +43,7 @@ fi
 
 DESIRED_ASSET="postmesh-${DESIRED_VERSION}-${PLATFORM_KEY}.tar.gz"
 DESIRED_URL="https://github.com/${REPO}/releases/download/v${DESIRED_VERSION}/${DESIRED_ASSET}"
-DESIRED_SHA=$(echo "$MANIFEST" | sed -n '/"'"${PLATFORM_KEY}"'":/,/},/ s/.*"sha256": *"\([^"]*\)".*/\1/p')
+DESIRED_SHA=$(echo "$MANIFEST" | grep -F "$DESIRED_ASSET" | sed 's/.*"sha256": *"\([^"]*\)".*/\1/')
 
 if [ -z "$DESIRED_SHA" ]; then
   echo "No asset for ${PLATFORM_KEY} in release ${DESIRED_VERSION}" >&2
