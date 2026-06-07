@@ -1,0 +1,8 @@
+43a7a96277f092120be28ea8d1793bbe5e352544f8c2e6374d50b1567bc5533b  artifacts/assets/postmesh-0.2.0-rc.5-darwin-arm64.tar.gz
+170cda5ed5075e81501612a445f530d3a291d1e3a6374eb83e1d1e53919b939e  artifacts/assets/postmesh-0.2.0-rc.5-darwin-x64.tar.gz
+4db0cc8a1ce3e3f6503bcd584af00eefbdee79fc19cfd210e7f6b07ee7e214d2  artifacts/assets/postmesh-0.2.0-rc.5-linux-arm64-musl.tar.gz
+25509d35388a32734b6fc86098d1017d323f7f4fd8aabd40ce2b549c2539c83c  artifacts/assets/postmesh-0.2.0-rc.5-linux-arm64.tar.gz
+4923119fd671e856b2e8d7b6f35a909fac43729fabeb0eeec4b26c4ddc7cdffd  artifacts/assets/postmesh-0.2.0-rc.5-linux-x64-musl.tar.gz
+1ec1877ef750ecee8e92f57985ebefc5c4d72c9806b105cfbfa9cc770b31b4b4  artifacts/assets/postmesh-0.2.0-rc.5-linux-x64.tar.gz
+a9a0f6ae31a1cf497eaa35f1236fbde85e39e16e28f87453910f315747f68a68  artifacts/assets/postmesh-0.2.0-rc.5-windows-arm64.zip
+cca984badf37719d4cc741b86c4fd7642c43206cc62a4bf17e13d7655bbc0100  artifacts/assets/postmesh-0.2.0-rc.5-windows-x64.zip
