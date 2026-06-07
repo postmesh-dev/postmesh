@@ -138,31 +138,15 @@ TARGET_STAGE="$TMP_DIR/target-install"
 mkdir -p "$TARGET_TMP"
 cp "$STAGING/$APP_NAME" "$TARGET_TMP/$APP_NAME"
 chmod +x "$TARGET_TMP/$APP_NAME"
-if [ -f "$STAGING/postmesh-migrate" ]; then
-  cp "$STAGING/postmesh-migrate" "$TARGET_TMP/postmesh-migrate"
-  chmod +x "$TARGET_TMP/postmesh-migrate"
-fi
 
 mkdir -p "$VERSIONS_DIR"
 rm -rf "$TARGET_STAGE"
 mkdir -p "$TARGET_STAGE"
 mv "$TARGET_TMP/$APP_NAME" "$TARGET_STAGE/$APP_NAME"
-if [ -f "$TARGET_TMP/postmesh-migrate" ]; then
-  mv "$TARGET_TMP/postmesh-migrate" "$TARGET_STAGE/postmesh-migrate"
-fi
 mkdir -p "$TARGET"
 mv "$TARGET_STAGE/$APP_NAME" "$TARGET/$APP_NAME"
-if [ -f "$TARGET_STAGE/postmesh-migrate" ]; then
-  mv "$TARGET_STAGE/postmesh-migrate" "$TARGET/postmesh-migrate"
-fi
 
 ln -sf "versions/$VERSION_DIR/$APP_NAME" "$SYMLINK"
-
-# Run database migration
-MIGRATE_BIN="$TARGET/postmesh-migrate"
-if [ -f "$MIGRATE_BIN" ]; then
-  "$MIGRATE_BIN" 2>&1 || echo "Warning: database migration failed" >&2
-fi
 
 INSTALL_JSON_TMP="$TMP_DIR/install.json"
 cat > "$INSTALL_JSON_TMP" <<EOF
