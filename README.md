@@ -178,6 +178,12 @@ postmesh connect --provider gmail
 postmesh connect --provider outlook
 ```
 
+### Gmail OAuth verification notice
+
+Postmesh is awaiting Google OAuth verification. During Gmail setup, Google may
+show an unverified-app notice. Review Google's details before proceeding to
+Postmesh.
+
 Resume a pending hosted auth session:
 
 ```bash
