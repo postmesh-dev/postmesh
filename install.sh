@@ -43,10 +43,23 @@ fi
 
 DESIRED_ASSET="postmesh-${DESIRED_VERSION}-${PLATFORM_KEY}.tar.gz"
 DESIRED_URL="https://github.com/${REPO}/releases/download/v${DESIRED_VERSION}/${DESIRED_ASSET}"
-DESIRED_SHA=$(echo "$MANIFEST" | grep -F "$DESIRED_ASSET" | sed 's/.*"sha256": *"\([^"]*\)".*/\1/')
+DESIRED_SHA=$(echo "$MANIFEST" | awk -v asset="$DESIRED_ASSET" '
+  index($0, asset) { found = 1 }
+  found && index($0, "\"sha256\"") {
+    line = $0
+    sub(/^.*"sha256"[[:space:]]*:[[:space:]]*"/, "", line)
+    sub(/".*$/, "", line)
+    print line
+    exit
+  }
+')
 
 if [ -z "$DESIRED_SHA" ]; then
   echo "No asset for ${PLATFORM_KEY} in release ${DESIRED_VERSION}" >&2
+  exit 1
+fi
+if ! echo "$DESIRED_SHA" | grep -Eq '^[0-9a-f]{64}$'; then
+  echo "Invalid checksum metadata for ${DESIRED_ASSET}: ${DESIRED_SHA}" >&2
   exit 1
 fi
 
