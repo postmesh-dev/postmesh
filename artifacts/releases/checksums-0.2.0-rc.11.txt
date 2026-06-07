@@ -1,0 +1,8 @@
+b0def74590824dc447a0ec9afb78c3d221eb6ba0490d6e5ea6db8f3fbcac36f3  postmesh-0.2.0-rc.11-linux-x64.tar.gz
+82e37a63f5ab73182f33204a98776814f4363dba088435beec90608969b01df5  postmesh-0.2.0-rc.11-linux-arm64.tar.gz
+7bfa0094500c7d23c95d9549a50de6490e7d346ca0ab8c1a6717cf4330473808  postmesh-0.2.0-rc.11-linux-x64-musl.tar.gz
+2cdc3459633afb87aa47045cb064717dfe4d1ed2a86be696bdccd0ca1077ba17  postmesh-0.2.0-rc.11-linux-arm64-musl.tar.gz
+ce41f31d613cedf29f21acd1ded8f8f00fc336edfdc2f90224ee9b35eb633ae7  postmesh-0.2.0-rc.11-windows-x64.zip
+5e501d200e089053e082d709be7bdb94ee899b51e57b1e25cd66864ebe512a0c  postmesh-0.2.0-rc.11-windows-arm64.zip
+a09ea31ae33d13754bdfe093996f7c94396c44134cdfbb456b7ca51a99c8edf5  postmesh-0.2.0-rc.11-darwin-x64.tar.gz
+11de9035e029d1204060798e926dda651b6a8f0886a0e21853f9f2801593002b  postmesh-0.2.0-rc.11-darwin-arm64.tar.gz
