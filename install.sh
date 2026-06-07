@@ -2,7 +2,7 @@
 set -eu
 
 APP_NAME="postmesh"
-VERSION="${POSTMESH_VERSION:-latest}"
+VERSION="${INSTALL_VERSION:-${POSTMESH_VERSION:-latest}}"
 INSTALL_DIR="${POSTMESH_INSTALL_DIR:-$HOME/.local/bin}"
 
 REPO="postmesh-dev/postmesh"
@@ -32,6 +32,9 @@ API_HEADER="Accept: application/vnd.github.v3.raw"
 if [ "$VERSION" = "latest" ]; then
   MANIFEST=$(curl -fsSL -H "$API_HEADER" "https://api.github.com/repos/${REPO}/contents/artifacts/latest.json" 2>/dev/null || curl -fsSL "https://raw.githubusercontent.com/${REPO}/main/artifacts/latest.json")
   DESIRED_VERSION=$(echo "$MANIFEST" | sed -n 's/.*"latestStable": *"\([^"]*\)".*/\1/p')
+  if [ -z "$DESIRED_VERSION" ] || [ "$DESIRED_VERSION" = "0.0.0" ]; then
+    DESIRED_VERSION=$(echo "$MANIFEST" | sed -n 's/.*"latestVersion": *"\([^"]*\)".*/\1/p')
+  fi
 else
   MANIFEST=$(curl -fsSL -H "$API_HEADER" "https://api.github.com/repos/${REPO}/contents/artifacts/releases/${VERSION}.json" 2>/dev/null || curl -fsSL "https://raw.githubusercontent.com/${REPO}/main/artifacts/releases/${VERSION}.json")
   DESIRED_VERSION="$VERSION"
