@@ -15,11 +15,17 @@ lives in `artifacts/`.
 curl -fsSL https://raw.githubusercontent.com/postmesh-dev/postmesh/refs/tags/latest/install.sh | sh
 ```
 
+The installer downloads both `postmesh` and `postmesh-migrate`, runs the
+migration on any existing databases, and places both binaries in
+`~/.local/bin/`.
+
 Uninstall:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/postmesh-dev/postmesh/refs/tags/latest/uninstall.sh | sh
 ```
+
+(Keeps your local data by default. Add `--purge` to remove everything.)
 
 ## Quick start
 
@@ -28,7 +34,7 @@ curl -fsSL https://raw.githubusercontent.com/postmesh-dev/postmesh/refs/tags/lat
 postmesh connect --provider gmail
 
 # Sync mail locally
-postmesh sync
+postmesh accounts sync
 
 # List recent messages
 postmesh messages list --page.limit 10
@@ -38,12 +44,21 @@ postmesh messages list \
   --filter.from billing@example.com \
   --filter.received_at.gte 2026-06-01T00:00:00Z \
   --filter.query invoice
+
+# Define a collection and extract records via a pipeline
+postmesh workflows apply -f examples/workflows/coupon-vault.yaml
+
+# Query extracted records
+postmesh records list --collection coupons \
+  --where 'data.vendor=Acme' \
+  --select 'data.code,data.discount'
 ```
 
 ## What Postmesh does
 
 - Syncs Gmail and Outlook mail into a normalized local store
 - Queries that local store with explicit structured filters
+- Defines pipelines that extract structured records from messages
 - Returns predictable JSON for scripts, tools, and agents
 - Avoids repeated provider API calls for every lookup
 
@@ -57,23 +72,57 @@ Global flags:
 | `--email` | `email` or `all` | Target a specific account or all configured accounts |
 | `-f`, `--file` | `path` or `-` | Read input from file or stdin and merge it with CLI flags |
 
-Top-level commands:
-
-- `postmesh connect`
-- `postmesh sync`
-- `postmesh messages list`
-- `postmesh messages get`
-- `postmesh thread messages`
-- `postmesh compile`
-- `postmesh status`
-- `postmesh doctor`
-- `postmesh help`
-
 Account management:
 
-- `postmesh accounts list`
-- `postmesh accounts remove <email>`
-- `postmesh accounts update <email> --nickname <name>`
+- `postmesh accounts add` — OAuth connect (alias for `connect`)
+- `postmesh accounts list` — List configured accounts
+- `postmesh accounts remove` — Remove an account
+- `postmesh accounts update` — Update nickname
+- `postmesh accounts sync` — Sync messages for one or all accounts
+
+Messages:
+
+- `postmesh messages list` — Search messages with structured filters
+- `postmesh messages get` — Get a single message by ID
+- `postmesh thread messages` — Get all messages in a thread
+
+Workflows:
+
+- `postmesh workflows validate` — Validate a workflow bundle (`-f file.yaml`)
+- `postmesh workflows apply` — Validate and install a workflow bundle
+- `postmesh workflows diff` — Show what a bundle would change
+- `postmesh workflows export` — Export installed collections and pipelines
+
+Collections:
+
+- `postmesh collections list` — List installed collections
+- `postmesh collections describe` — Show schema, key, indexes, record count
+- `postmesh collections create` — Create a standalone collection
+- `postmesh collections update` — Update collection definition
+- `postmesh collections delete` — Delete a collection
+- `postmesh collections reindex` — Recreate indexes
+
+Pipelines:
+
+- `postmesh pipelines list` — List installed pipelines
+- `postmesh pipelines describe` — Show source, steps, store target
+- `postmesh pipelines validate` — Validate a standalone pipeline
+- `postmesh pipelines create` — Create a standalone pipeline
+- `postmesh pipelines update` — Update pipeline definition
+- `postmesh pipelines enable / disable` — Toggle pipeline state
+- `postmesh pipelines run` — Execute a pipeline
+- `postmesh pipelines delete` — Delete a pipeline
+
+Records:
+
+- `postmesh records list` — Query records in a collection
+- `postmesh records get` — Get a single record by key
+
+Other:
+
+- `postmesh model` — Select or list available AI models
+- `postmesh doctor` — Run system diagnostics
+- `postmesh help` — Show usage help
 
 ## Mail query interface
 
@@ -137,7 +186,6 @@ Supported `messages list` filters:
 | `--filter.is_read` | Read-state filter |
 | `--filter.folder` | Folder identifier |
 | `--filter.query` | Full-text search query |
-| `--filter.labels` | Gmail labels |
 | `--sort.field` | `received_at` or `last_modified` |
 | `--sort.order` | `asc` or `desc` |
 | `--page.limit` | Maximum rows, `1-100` |
@@ -148,25 +196,112 @@ Pagination:
 `messages list` returns a `next_cursor` when more results are available. Pass it
 back as `--page.cursor` to fetch the next page.
 
-## Sync
+## Collection records
 
-`postmesh sync` keeps the local mailbox state up to date.
+Collections are schemas that describe structured records extracted from email via
+pipelines. Pipelines are YAML-defined extractors that classify, filter, map, and
+validate fields from matched messages.
 
-Supported flags:
+### Field path scheme
 
-| Flag | Description |
-| --- | --- |
-| `--full` | Force a full resync instead of incremental provider state |
-| `--since` | Sync only messages received at or after a window like `90d` or `2026-06-01` |
-| `--email` | Sync one configured account |
-| `--show-new` | Show up to `N` newly synced messages in pretty output |
+All record queries use a consistent field path scheme that matches the output
+shape:
 
-Examples:
+| Path | Example | Where it resolves |
+| --- | --- | --- |
+| `data.xxx` | `data.vendor` | Collection data field (from the record's JSON body) |
+| `status` | `status` | System status column |
+| `source.message_id` | `source.message_id` | Source email reference |
+| `pipeline.name` | `pipeline.name` | Pipeline that stored the record |
+
+This scheme applies to `--where`, `--select`, and `--sort.field`.
+
+### Querying records
 
 ```bash
-postmesh sync
-postmesh sync --since 90d
-postmesh sync --email you@example.com --show-new 20
+# List all records
+postmesh records list --collection coupons
+
+# Filter by data field
+postmesh records list --collection coupons --where 'data.vendor=Acme'
+
+# Filter with operators
+postmesh records list --collection coupons \
+  --where 'data.discount_value' '{ "gte": 20 }'
+
+# Filter by system field
+postmesh records list --collection coupons --where 'status=review'
+
+# Select specific fields
+postmesh records list --collection coupons \
+  --select 'data.code,data.vendor,data.discount,status'
+
+# Sort by data field
+postmesh records list --collection coupons \
+  --sort.field 'data.expiry_date' --sort.order asc
+
+# Pagination
+postmesh records list --collection coupons --page.limit 10
+postmesh records list --collection coupons --page.cursor <cursor>
+```
+
+### Getting a single record
+
+```bash
+postmesh records get --collection coupons --record_key 'msg1:SAVE20'
+```
+
+## Workflows
+
+A workflow bundles a collection and its pipeline together:
+
+```yaml
+name: coupon-vault
+collections:
+  coupons:
+    name: coupons
+    schema:
+      vendor:
+        type: string
+        required: true
+      code:
+        type: string
+        required: true
+      discount:
+        type: string
+    key:
+      fields: [source_message_id, code]
+pipelines:
+  coupons:
+    name: coupons
+    source:
+      query:
+        filter:
+          query: "coupon OR promo OR discount"
+    process:
+      - classify:
+          field: data.kind
+          using: regex
+          enum: [coupon, promotion, other]
+      - filter:
+          where:
+            data.kind: [coupon, promotion]
+      - extract:
+          using: regex
+          fields:
+            data.code:
+              input: text
+              pattern: '(?:code)[:\s]+([A-Z0-9]+)'
+      - validate:
+          require: [data.vendor, data.code, data.source_message_id]
+    store:
+      collection: coupons
+```
+
+```bash
+postmesh workflows apply -f coupon-vault.yaml
+postmesh pipelines run coupons
+postmesh records list --collection coupons
 ```
 
 ## Connect
@@ -192,37 +327,6 @@ postmesh connect --session <session_id> --async
 `--async` performs a single non-blocking poll and returns `waiting` if the
 authorization session is not ready yet.
 
-## Message retrieval
-
-Get one message:
-
-```bash
-postmesh messages get <message_id>
-```
-
-Get a thread:
-
-```bash
-postmesh thread messages --conversation-id <conversation_id>
-```
-
-## Natural-language compile
-
-`compile` turns a natural-language query into a structured `MailQuery`.
-
-```bash
-postmesh compile "emails from Bob last week about the budget"
-```
-
-Compile-specific flags:
-
-| Flag | Description |
-| --- | --- |
-| `--model` | Enable local AI fallback |
-| `--timezone` | IANA timezone for relative date resolution |
-| `--now` | Override current time for deterministic testing |
-| `--debug` | Include rule and model diagnostics |
-
 ## Output shape
 
 Pretty mode is optimized for humans. JSON mode is intended for scripts and
@@ -246,6 +350,32 @@ Example `messages list` JSON:
     }
   ],
   "next_cursor": "opaque-cursor"
+}
+```
+
+Example `records list` JSON:
+
+```json
+{
+  "data": [
+    {
+      "id": "@local/coupon-vault:coupons:msg1:SAVE20",
+      "record_key": "msg1:SAVE20",
+      "data": {
+        "vendor": "Acme Corp",
+        "code": "SAVE20",
+        "discount": "20% off",
+        "offer_url": "https://acme.com/coupon/SAVE20"
+      },
+      "status": "active",
+      "created_at": "2026-06-07T12:00:00Z",
+      "updated_at": "2026-06-07T12:00:00Z"
+    }
+  ],
+  "page": {
+    "limit": 50,
+    "has_more": false
+  }
 }
 ```
 
