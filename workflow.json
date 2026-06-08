@@ -60,10 +60,6 @@
                 ]
               }
             },
-            "required": [
-              "type"
-            ],
-            "additionalProperties": false,
             "description": "Collection storage backend configuration"
           },
           "schema": {
@@ -111,12 +107,8 @@
                 }
               },
               "required": [
-                "type",
-                "required",
-                "nullable",
-                "indexed"
+                "type"
               ],
-              "additionalProperties": false,
               "description": "Schema definition for a single collection field"
             }
           },
@@ -140,10 +132,8 @@
               }
             },
             "required": [
-              "fields",
-              "separator"
+              "fields"
             ],
-            "additionalProperties": false,
             "description": "Collection record key definition"
           },
           "indexes": {
@@ -168,10 +158,8 @@
                 }
               },
               "required": [
-                "fields",
-                "unique"
+                "fields"
               ],
-              "additionalProperties": false,
               "description": "Index definition for a collection"
             }
           },
@@ -181,19 +169,14 @@
               "max_age": {
                 "type": "string"
               }
-            },
-            "additionalProperties": false
+            }
           }
         },
         "required": [
           "name",
-          "version",
-          "backend",
           "schema",
-          "key",
-          "indexes"
+          "key"
         ],
-        "additionalProperties": false,
         "description": "Declarative collection definition"
       }
     },
@@ -287,8 +270,7 @@
                             "description": "Only messages received at or before this timestamp",
                             "type": "string"
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       "is_read": {
                         "description": "Filter by read state",
@@ -309,8 +291,7 @@
                           "type": "string"
                         }
                       }
-                    },
-                    "additionalProperties": false
+                    }
                   },
                   "sort": {
                     "description": "Sort specification",
@@ -334,12 +315,7 @@
                           "desc"
                         ]
                       }
-                    },
-                    "required": [
-                      "field",
-                      "order"
-                    ],
-                    "additionalProperties": false
+                    }
                   },
                   "page": {
                     "default": {
@@ -359,11 +335,7 @@
                         "description": "Opaque cursor returned from a previous page",
                         "type": "string"
                       }
-                    },
-                    "required": [
-                      "limit"
-                    ],
-                    "additionalProperties": false
+                    }
                   },
                   "select": {
                     "description": "Subset of message fields to return",
@@ -380,10 +352,6 @@
                     }
                   }
                 },
-                "required": [
-                  "page"
-                ],
-                "additionalProperties": false,
                 "description": "Structured query language for listing messages"
               },
               "include": {
@@ -405,14 +373,7 @@
                     "default": false,
                     "type": "boolean"
                   }
-                },
-                "required": [
-                  "body",
-                  "headers",
-                  "thread",
-                  "attachments"
-                ],
-                "additionalProperties": false
+                }
               },
               "limit": {
                 "type": "integer",
@@ -421,10 +382,8 @@
               }
             },
             "required": [
-              "type",
               "query"
             ],
-            "additionalProperties": false,
             "description": "Pipeline source definition"
           },
           "process": {
@@ -539,15 +498,8 @@
                                       }
                                     },
                                     "required": [
-                                      "pattern",
-                                      "flags",
-                                      "input",
-                                      "group",
-                                      "all",
-                                      "trim",
-                                      "normalize"
+                                      "pattern"
                                     ],
-                                    "additionalProperties": false,
                                     "description": "Regex match definition"
                                   },
                                   {
@@ -614,15 +566,8 @@
                                         }
                                       },
                                       "required": [
-                                        "pattern",
-                                        "flags",
-                                        "input",
-                                        "group",
-                                        "all",
-                                        "trim",
-                                        "normalize"
+                                        "pattern"
                                       ],
-                                      "additionalProperties": false,
                                       "description": "Regex match definition"
                                     }
                                   }
@@ -641,10 +586,8 @@
                             },
                             "required": [
                               "label",
-                              "match",
-                              "require"
+                              "match"
                             ],
-                            "additionalProperties": false,
                             "description": "One regex-backed classification rule"
                           }
                         },
@@ -654,16 +597,13 @@
                         }
                       },
                       "required": [
-                        "field",
-                        "using"
-                      ],
-                      "additionalProperties": false
+                        "field"
+                      ]
                     }
                   },
                   "required": [
                     "classify"
-                  ],
-                  "additionalProperties": false
+                  ]
                 },
                 {
                   "type": "object",
@@ -721,12 +661,8 @@
                                   }
                                 },
                                 "required": [
-                                  "type",
-                                  "required",
-                                  "nullable",
-                                  "indexed"
+                                  "type"
                                 ],
-                                "additionalProperties": false,
                                 "description": "Schema definition for a single collection field"
                               }
                             }
@@ -837,31 +773,17 @@
                               }
                             },
                             "required": [
-                              "pattern",
-                              "flags",
-                              "input",
-                              "group",
-                              "all",
-                              "required",
-                              "trim",
-                              "normalize"
+                              "pattern"
                             ],
-                            "additionalProperties": false,
                             "description": "Regex extraction definition for one output field"
                           }
                         }
-                      },
-                      "required": [
-                        "evidence",
-                        "using"
-                      ],
-                      "additionalProperties": false
+                      }
                     }
                   },
                   "required": [
                     "extract"
-                  ],
-                  "additionalProperties": false
+                  ]
                 },
                 {
                   "type": "object",
@@ -879,14 +801,12 @@
                       },
                       "required": [
                         "where"
-                      ],
-                      "additionalProperties": false
+                      ]
                     }
                   },
                   "required": [
                     "filter"
-                  ],
-                  "additionalProperties": false
+                  ]
                 },
                 {
                   "type": "object",
@@ -906,14 +826,12 @@
                       },
                       "required": [
                         "fields"
-                      ],
-                      "additionalProperties": false
+                      ]
                     }
                   },
                   "required": [
                     "map"
-                  ],
-                  "additionalProperties": false
+                  ]
                 },
                 {
                   "type": "object",
@@ -937,18 +855,12 @@
                             "fail"
                           ]
                         }
-                      },
-                      "required": [
-                        "require",
-                        "on_error"
-                      ],
-                      "additionalProperties": false
+                      }
                     }
                   },
                   "required": [
                     "validate"
-                  ],
-                  "additionalProperties": false
+                  ]
                 },
                 {
                   "type": "object",
@@ -974,16 +886,13 @@
                         }
                       },
                       "required": [
-                        "by",
-                        "strategy"
-                      ],
-                      "additionalProperties": false
+                        "by"
+                      ]
                     }
                   },
                   "required": [
                     "dedupe"
-                  ],
-                  "additionalProperties": false
+                  ]
                 }
               ]
             }
@@ -1014,10 +923,8 @@
                   }
                 },
                 "required": [
-                  "fields",
-                  "separator"
+                  "fields"
                 ],
-                "additionalProperties": false,
                 "description": "Collection record key definition"
               },
               "mode": {
@@ -1036,31 +943,19 @@
               }
             },
             "required": [
-              "collection",
-              "mode"
-            ],
-            "additionalProperties": false
+              "collection"
+            ]
           }
         },
         "required": [
           "name",
-          "version",
-          "enabled",
           "source",
           "process",
           "store"
         ],
-        "additionalProperties": false,
         "description": "Declarative pipeline definition"
       }
     }
   },
-  "required": [
-    "namespace",
-    "version",
-    "collections",
-    "pipelines"
-  ],
-  "additionalProperties": false,
   "description": "AUTO-GENERATED — do not edit directly. Run `bun run scripts/generate-workflow-schema.ts` to regenerate."
 }
