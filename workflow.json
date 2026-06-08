@@ -1,0 +1,1066 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "namespace": {
+      "default": "local",
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "description": "Stable resource name used in config files and CLI commands"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "description": "Stable resource name used in config files and CLI commands"
+    },
+    "version": {
+      "default": 1,
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "description": {
+      "type": "string"
+    },
+    "collections": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+            "description": "Stable resource name used in config files and CLI commands"
+          },
+          "description": {
+            "type": "string"
+          },
+          "version": {
+            "default": 1,
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "backend": {
+            "default": {
+              "type": "json_records"
+            },
+            "type": "object",
+            "properties": {
+              "type": {
+                "default": "json_records",
+                "type": "string",
+                "enum": [
+                  "json_records",
+                  "table"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false,
+            "description": "Collection storage backend configuration"
+          },
+          "schema": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "string",
+                    "number",
+                    "integer",
+                    "boolean",
+                    "date",
+                    "datetime",
+                    "json"
+                  ],
+                  "description": "Expected value type for this field"
+                },
+                "required": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "nullable": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "enum": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "default": {},
+                "indexed": {
+                  "default": false,
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "required",
+                "nullable",
+                "indexed"
+              ],
+              "additionalProperties": false,
+              "description": "Schema definition for a single collection field"
+            }
+          },
+          "key": {
+            "type": "object",
+            "properties": {
+              "fields": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+                  "description": "Collection field name. Must start with a letter and contain only letters, numbers, and underscores. Leading underscore is reserved for system fields."
+                }
+              },
+              "separator": {
+                "default": ":",
+                "type": "string"
+              }
+            },
+            "required": [
+              "fields",
+              "separator"
+            ],
+            "additionalProperties": false,
+            "description": "Collection record key definition"
+          },
+          "indexes": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fields": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "unique": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "fields",
+                "unique"
+              ],
+              "additionalProperties": false,
+              "description": "Index definition for a collection"
+            }
+          },
+          "retain": {
+            "type": "object",
+            "properties": {
+              "max_age": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "name",
+          "version",
+          "backend",
+          "schema",
+          "key",
+          "indexes"
+        ],
+        "additionalProperties": false,
+        "description": "Declarative collection definition"
+      }
+    },
+    "pipelines": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+            "description": "Stable resource name used in config files and CLI commands"
+          },
+          "description": {
+            "type": "string"
+          },
+          "version": {
+            "default": 1,
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "enabled": {
+            "default": true,
+            "type": "boolean"
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "default": "messages",
+                "type": "string",
+                "const": "messages"
+              },
+              "query": {
+                "type": "object",
+                "properties": {
+                  "filter": {
+                    "description": "Filter criteria",
+                    "type": "object",
+                    "properties": {
+                      "from": {
+                        "description": "Filter by sender email address(es)",
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "to": {
+                        "description": "Filter by recipient email address(es)",
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "subject": {
+                        "description": "Keywords to match in subject",
+                        "type": "string"
+                      },
+                      "body": {
+                        "description": "Keywords to match in body preview",
+                        "type": "string"
+                      },
+                      "received_at": {
+                        "description": "Received-at time range filter",
+                        "type": "object",
+                        "properties": {
+                          "gte": {
+                            "description": "Only messages received at or after this timestamp",
+                            "type": "string"
+                          },
+                          "lte": {
+                            "description": "Only messages received at or before this timestamp",
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "is_read": {
+                        "description": "Filter by read state",
+                        "type": "boolean"
+                      },
+                      "folder": {
+                        "description": "Filter by folder identifier (e.g. inbox, archive)",
+                        "type": "string"
+                      },
+                      "query": {
+                        "description": "Full-text search query (uses FTS5, matches subject + body)",
+                        "type": "string"
+                      },
+                      "labels": {
+                        "description": "Filter by Gmail labels",
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "sort": {
+                    "description": "Sort specification",
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "default": "received_at",
+                        "description": "Field to sort by",
+                        "type": "string",
+                        "enum": [
+                          "received_at",
+                          "last_modified"
+                        ]
+                      },
+                      "order": {
+                        "default": "desc",
+                        "description": "Sort direction",
+                        "type": "string",
+                        "enum": [
+                          "asc",
+                          "desc"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "order"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "page": {
+                    "default": {
+                      "limit": 20
+                    },
+                    "description": "Pagination settings",
+                    "type": "object",
+                    "properties": {
+                      "limit": {
+                        "default": 20,
+                        "description": "Maximum number of messages to return",
+                        "type": "integer",
+                        "exclusiveMinimum": 0,
+                        "maximum": 100
+                      },
+                      "cursor": {
+                        "description": "Opaque cursor returned from a previous page",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "limit"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "select": {
+                    "description": "Subset of message fields to return",
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "id",
+                        "subject",
+                        "from_email",
+                        "body_preview",
+                        "received_at"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "page"
+                ],
+                "additionalProperties": false,
+                "description": "Structured query language for listing messages"
+              },
+              "include": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "default": true,
+                    "type": "boolean"
+                  },
+                  "headers": {
+                    "default": true,
+                    "type": "boolean"
+                  },
+                  "thread": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "attachments": {
+                    "default": false,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "body",
+                  "headers",
+                  "thread",
+                  "attachments"
+                ],
+                "additionalProperties": false
+              },
+              "limit": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 10000
+              }
+            },
+            "required": [
+              "type",
+              "query"
+            ],
+            "additionalProperties": false,
+            "description": "Pipeline source definition"
+          },
+          "process": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "classify": {
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string"
+                        },
+                        "enum": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "boolean": {
+                          "type": "boolean"
+                        },
+                        "instructions": {
+                          "type": "string"
+                        },
+                        "confidence_field": {
+                          "type": "string"
+                        },
+                        "using": {
+                          "default": "engine",
+                          "description": "Execution strategy. regex uses deterministic regex rules. engine is reserved for the future processing engine.",
+                          "type": "string",
+                          "enum": [
+                            "regex",
+                            "engine"
+                          ]
+                        },
+                        "rules": {
+                          "description": "Regex classification rules used when using=regex",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "description": "Classification label to emit when this rule matches"
+                              },
+                              "match": {
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "pattern": {
+                                        "type": "string",
+                                        "description": "Regular expression pattern used to match the input text"
+                                      },
+                                      "flags": {
+                                        "default": "i",
+                                        "description": "JavaScript RegExp flags used when compiling the pattern",
+                                        "type": "string",
+                                        "pattern": "^[dgimsuvy]*$"
+                                      },
+                                      "input": {
+                                        "default": "text",
+                                        "description": "Message field to run the regex against. text means a combined searchable representation such as subject plus body.",
+                                        "type": "string",
+                                        "enum": [
+                                          "subject",
+                                          "body",
+                                          "headers",
+                                          "from",
+                                          "to",
+                                          "text"
+                                        ]
+                                      },
+                                      "group": {
+                                        "default": 0,
+                                        "description": "Capture group to read from the match. Use 0 for the full match, a number for a numbered group, or a string for a named group.",
+                                        "anyOf": [
+                                          {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 9007199254740991
+                                          },
+                                          {
+                                            "type": "string"
+                                          }
+                                        ]
+                                      },
+                                      "all": {
+                                        "default": false,
+                                        "description": "Whether to return all matches instead of only the first match",
+                                        "type": "boolean"
+                                      },
+                                      "trim": {
+                                        "default": true,
+                                        "description": "Whether to trim extracted string values",
+                                        "type": "boolean"
+                                      },
+                                      "normalize": {
+                                        "default": "none",
+                                        "description": "Optional normalization applied to extracted string values",
+                                        "type": "string",
+                                        "enum": [
+                                          "none",
+                                          "lowercase",
+                                          "uppercase"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "pattern",
+                                      "flags",
+                                      "input",
+                                      "group",
+                                      "all",
+                                      "trim",
+                                      "normalize"
+                                    ],
+                                    "additionalProperties": false,
+                                    "description": "Regex match definition"
+                                  },
+                                  {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "pattern": {
+                                          "type": "string",
+                                          "description": "Regular expression pattern used to match the input text"
+                                        },
+                                        "flags": {
+                                          "default": "i",
+                                          "description": "JavaScript RegExp flags used when compiling the pattern",
+                                          "type": "string",
+                                          "pattern": "^[dgimsuvy]*$"
+                                        },
+                                        "input": {
+                                          "default": "text",
+                                          "description": "Message field to run the regex against. text means a combined searchable representation such as subject plus body.",
+                                          "type": "string",
+                                          "enum": [
+                                            "subject",
+                                            "body",
+                                            "headers",
+                                            "from",
+                                            "to",
+                                            "text"
+                                          ]
+                                        },
+                                        "group": {
+                                          "default": 0,
+                                          "description": "Capture group to read from the match. Use 0 for the full match, a number for a numbered group, or a string for a named group.",
+                                          "anyOf": [
+                                            {
+                                              "type": "integer",
+                                              "minimum": 0,
+                                              "maximum": 9007199254740991
+                                            },
+                                            {
+                                              "type": "string"
+                                            }
+                                          ]
+                                        },
+                                        "all": {
+                                          "default": false,
+                                          "description": "Whether to return all matches instead of only the first match",
+                                          "type": "boolean"
+                                        },
+                                        "trim": {
+                                          "default": true,
+                                          "description": "Whether to trim extracted string values",
+                                          "type": "boolean"
+                                        },
+                                        "normalize": {
+                                          "default": "none",
+                                          "description": "Optional normalization applied to extracted string values",
+                                          "type": "string",
+                                          "enum": [
+                                            "none",
+                                            "lowercase",
+                                            "uppercase"
+                                          ]
+                                        }
+                                      },
+                                      "required": [
+                                        "pattern",
+                                        "flags",
+                                        "input",
+                                        "group",
+                                        "all",
+                                        "trim",
+                                        "normalize"
+                                      ],
+                                      "additionalProperties": false,
+                                      "description": "Regex match definition"
+                                    }
+                                  }
+                                ],
+                                "description": "One or more regex matches that trigger this label"
+                              },
+                              "require": {
+                                "default": "any",
+                                "description": "Whether any match or all matches are required for this rule to trigger",
+                                "type": "string",
+                                "enum": [
+                                  "any",
+                                  "all"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "label",
+                              "match",
+                              "require"
+                            ],
+                            "additionalProperties": false,
+                            "description": "One regex-backed classification rule"
+                          }
+                        },
+                        "default": {
+                          "description": "Default classification label if no regex rules match",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "using"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "classify"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "extract": {
+                      "type": "object",
+                      "properties": {
+                        "schema": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "object",
+                              "propertyNames": {
+                                "type": "string"
+                              },
+                              "additionalProperties": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "string",
+                                      "number",
+                                      "integer",
+                                      "boolean",
+                                      "date",
+                                      "datetime",
+                                      "json"
+                                    ],
+                                    "description": "Expected value type for this field"
+                                  },
+                                  "required": {
+                                    "default": false,
+                                    "type": "boolean"
+                                  },
+                                  "nullable": {
+                                    "default": true,
+                                    "type": "boolean"
+                                  },
+                                  "description": {
+                                    "type": "string"
+                                  },
+                                  "enum": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "default": {},
+                                  "indexed": {
+                                    "default": false,
+                                    "type": "boolean"
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "required",
+                                  "nullable",
+                                  "indexed"
+                                ],
+                                "additionalProperties": false,
+                                "description": "Schema definition for a single collection field"
+                              }
+                            }
+                          ]
+                        },
+                        "instructions": {
+                          "type": "string"
+                        },
+                        "evidence": {
+                          "default": false,
+                          "type": "boolean"
+                        },
+                        "confidence_field": {
+                          "type": "string"
+                        },
+                        "using": {
+                          "default": "engine",
+                          "description": "Execution strategy. regex uses deterministic regex field extraction. engine is reserved for the future processing engine.",
+                          "type": "string",
+                          "enum": [
+                            "regex",
+                            "engine"
+                          ]
+                        },
+                        "fields": {
+                          "description": "Regex-backed field extraction definitions used when using=regex",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "type": "object",
+                            "properties": {
+                              "pattern": {
+                                "type": "string",
+                                "description": "Regular expression pattern used to extract this field"
+                              },
+                              "flags": {
+                                "default": "i",
+                                "description": "JavaScript RegExp flags used when compiling the pattern",
+                                "type": "string",
+                                "pattern": "^[dgimsuvy]*$"
+                              },
+                              "input": {
+                                "default": "text",
+                                "description": "Message field to run the regex against. text means a combined searchable representation such as subject plus body.",
+                                "type": "string",
+                                "enum": [
+                                  "subject",
+                                  "body",
+                                  "headers",
+                                  "from",
+                                  "to",
+                                  "text"
+                                ]
+                              },
+                              "group": {
+                                "default": 1,
+                                "description": "Capture group to extract. Defaults to group 1 because extraction usually uses the first capture group.",
+                                "anyOf": [
+                                  {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 9007199254740991
+                                  },
+                                  {
+                                    "type": "string"
+                                  }
+                                ]
+                              },
+                              "all": {
+                                "default": false,
+                                "description": "Whether to extract all matches as an array",
+                                "type": "boolean"
+                              },
+                              "type": {
+                                "description": "Optional output type coercion. If omitted, use the target collection field type when available.",
+                                "type": "string",
+                                "enum": [
+                                  "string",
+                                  "number",
+                                  "integer",
+                                  "boolean",
+                                  "date",
+                                  "datetime",
+                                  "json"
+                                ]
+                              },
+                              "required": {
+                                "default": false,
+                                "description": "Whether this extracted field is required for this step to succeed",
+                                "type": "boolean"
+                              },
+                              "trim": {
+                                "default": true,
+                                "description": "Whether to trim extracted string values",
+                                "type": "boolean"
+                              },
+                              "normalize": {
+                                "default": "none",
+                                "description": "Optional normalization applied to extracted string values",
+                                "type": "string",
+                                "enum": [
+                                  "none",
+                                  "lowercase",
+                                  "uppercase"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "pattern",
+                              "flags",
+                              "input",
+                              "group",
+                              "all",
+                              "required",
+                              "trim",
+                              "normalize"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Regex extraction definition for one output field"
+                          }
+                        }
+                      },
+                      "required": [
+                        "evidence",
+                        "using"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "extract"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "filter": {
+                      "type": "object",
+                      "properties": {
+                        "where": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {}
+                        }
+                      },
+                      "required": [
+                        "where"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "filter"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "map": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "fields"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "map"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "validate": {
+                      "type": "object",
+                      "properties": {
+                        "require": {
+                          "default": [],
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "on_error": {
+                          "default": "review",
+                          "type": "string",
+                          "enum": [
+                            "drop",
+                            "review",
+                            "fail"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "require",
+                        "on_error"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "validate"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "dedupe": {
+                      "type": "object",
+                      "properties": {
+                        "by": {
+                          "minItems": 1,
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "strategy": {
+                          "default": "latest",
+                          "type": "string",
+                          "enum": [
+                            "first",
+                            "latest",
+                            "merge"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "by",
+                        "strategy"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "dedupe"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "store": {
+            "type": "object",
+            "properties": {
+              "collection": {
+                "type": "string"
+              },
+              "key": {
+                "type": "object",
+                "properties": {
+                  "fields": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 64,
+                      "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+                      "description": "Collection field name. Must start with a letter and contain only letters, numbers, and underscores. Leading underscore is reserved for system fields."
+                    }
+                  },
+                  "separator": {
+                    "default": ":",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fields",
+                  "separator"
+                ],
+                "additionalProperties": false,
+                "description": "Collection record key definition"
+              },
+              "mode": {
+                "default": "upsert",
+                "type": "string",
+                "enum": [
+                  "upsert",
+                  "insert",
+                  "replace"
+                ]
+              },
+              "review_if_confidence_below": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "collection",
+              "mode"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "name",
+          "version",
+          "enabled",
+          "source",
+          "process",
+          "store"
+        ],
+        "additionalProperties": false,
+        "description": "Declarative pipeline definition"
+      }
+    }
+  },
+  "required": [
+    "namespace",
+    "version",
+    "collections",
+    "pipelines"
+  ],
+  "additionalProperties": false,
+  "description": "AUTO-GENERATED — do not edit directly. Run `bun run scripts/generate-workflow-schema.ts` to regenerate."
+}
