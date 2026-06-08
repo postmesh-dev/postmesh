@@ -165,6 +165,29 @@ if [ -f "$MIGRATE_BIN" ]; then
   "$MIGRATE_BIN" 2>&1 || echo "Warning: database migration failed" >&2
 fi
 
+# Install shell completions (only for the user's current shell by default)
+SHELL_NAME="${SHELL##*/}"
+BASH_COMPLETIONS_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion/completions"
+ZSH_COMPLETIONS_DIR="${ZDOTDIR:-$HOME}/.zsh/completions"
+
+case "$SHELL_NAME" in
+  bash)
+    mkdir -p "$BASH_COMPLETIONS_DIR"
+    "$TARGET/$APP_NAME" completion --shell bash > "$BASH_COMPLETIONS_DIR/$APP_NAME" 2>/dev/null && echo "Installed bash completion to $BASH_COMPLETIONS_DIR/$APP_NAME" || true
+    ;;
+  zsh)
+    mkdir -p "$ZSH_COMPLETIONS_DIR"
+    "$TARGET/$APP_NAME" completion --shell zsh > "$ZSH_COMPLETIONS_DIR/_$APP_NAME" 2>/dev/null && echo "Installed zsh completion to $ZSH_COMPLETIONS_DIR/_$APP_NAME" || true
+    ;;
+  *)
+    # Unknown shell — install both as best-effort
+    mkdir -p "$BASH_COMPLETIONS_DIR"
+    "$TARGET/$APP_NAME" completion --shell bash > "$BASH_COMPLETIONS_DIR/$APP_NAME" 2>/dev/null && echo "Installed bash completion to $BASH_COMPLETIONS_DIR/$APP_NAME" || true
+    mkdir -p "$ZSH_COMPLETIONS_DIR"
+    "$TARGET/$APP_NAME" completion --shell zsh > "$ZSH_COMPLETIONS_DIR/_$APP_NAME" 2>/dev/null && echo "Installed zsh completion to $ZSH_COMPLETIONS_DIR/_$APP_NAME" || true
+    ;;
+esac
+
 INSTALL_JSON_TMP="$TMP_DIR/install.json"
 cat > "$INSTALL_JSON_TMP" <<EOF
 {
@@ -177,6 +200,7 @@ mkdir -p "$INSTALL_DIR"
 mv "$INSTALL_JSON_TMP" "$INSTALL_JSON"
 
 echo "Installed $APP_NAME v$DESIRED_VERSION to $SYMLINK"
+echo "Shell completions installed for bash and zsh."
 
 case ":$PATH:" in
   *":$INSTALL_DIR:"*)
