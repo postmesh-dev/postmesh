@@ -1,8 +1,14 @@
 {
-  "latestVersion": "0.4.3",
-  "latestStable": "0.4.3",
+  "version": "0.4.3",
+  "postmeshVersion": "0.4.3",
   "releasedAt": "2026-06-08T00:38:06.736Z",
-  "releaseUrl": "https://github.com/postmesh-dev/postmesh/releases/tag/v0.4.3",
+  "sourceRevision": "c12613bdc32f56a025759cc0cd903cf2420d75c2",
+  "managedRuntime": {
+    "llamaCpp": "b9439"
+  },
+  "defaultModel": {
+    "id": "qwen3-1.7b"
+  },
   "assets": {
     "linux-x64": {
       "name": "postmesh-0.4.3-linux-x64.tar.gz",
