@@ -4,26 +4,29 @@
   "properties": {
     "namespace": {
       "default": "local",
+      "description": "Workflow namespace (default: local)",
       "type": "string",
-      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
-      "description": "Stable resource name used in config files and CLI commands"
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
     },
     "name": {
+      "description": "Workflow name",
       "type": "string",
-      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
-      "description": "Stable resource name used in config files and CLI commands"
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
     },
     "version": {
       "default": 1,
+      "description": "Workflow config version",
       "type": "integer",
       "exclusiveMinimum": 0,
       "maximum": 9007199254740991
     },
     "description": {
+      "description": "Human-readable description of this workflow",
       "type": "string"
     },
     "collections": {
       "default": {},
+      "description": "Collection definitions in this workflow",
       "type": "object",
       "propertyNames": {
         "type": "string"
@@ -34,13 +37,15 @@
           "name": {
             "type": "string",
             "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
-            "description": "Stable resource name used in config files and CLI commands"
+            "description": "Collection name"
           },
           "description": {
+            "description": "Human-readable description of this collection",
             "type": "string"
           },
           "version": {
             "default": 1,
+            "description": "Collection config version",
             "type": "integer",
             "exclusiveMinimum": 0,
             "maximum": 9007199254740991
@@ -49,6 +54,7 @@
             "default": {
               "type": "json_records"
             },
+            "description": "Storage backend type",
             "type": "object",
             "properties": {
               "type": {
@@ -59,8 +65,7 @@
                   "table"
                 ]
               }
-            },
-            "description": "Collection storage backend configuration"
+            }
           },
           "schema": {
             "type": "object",
@@ -110,7 +115,8 @@
                 "type"
               ],
               "description": "Schema definition for a single collection field"
-            }
+            },
+            "description": "Field definitions for records stored in this collection"
           },
           "key": {
             "type": "object",
@@ -134,10 +140,11 @@
             "required": [
               "fields"
             ],
-            "description": "Collection record key definition"
+            "description": "Record key definition — determines uniqueness"
           },
           "indexes": {
             "default": [],
+            "description": "Secondary indexes for efficient querying",
             "type": "array",
             "items": {
               "type": "object",
@@ -164,9 +171,11 @@
             }
           },
           "retain": {
+            "description": "Retention policy for old records",
             "type": "object",
             "properties": {
               "max_age": {
+                "description": "Maximum age before automatic cleanup",
                 "type": "string"
               }
             }
@@ -182,6 +191,7 @@
     },
     "pipelines": {
       "default": {},
+      "description": "Pipeline definitions in this workflow",
       "type": "object",
       "propertyNames": {
         "type": "string"
@@ -192,19 +202,22 @@
           "name": {
             "type": "string",
             "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
-            "description": "Stable resource name used in config files and CLI commands"
+            "description": "Pipeline name"
           },
           "description": {
+            "description": "Human-readable description of this pipeline",
             "type": "string"
           },
           "version": {
             "default": 1,
+            "description": "Pipeline config version",
             "type": "integer",
             "exclusiveMinimum": 0,
             "maximum": 9007199254740991
           },
           "enabled": {
             "default": true,
+            "description": "Whether this pipeline is enabled and can be run",
             "type": "boolean"
           },
           "source": {
@@ -212,6 +225,7 @@
             "properties": {
               "type": {
                 "default": "messages",
+                "description": "Source type (only 'messages' supported)",
                 "type": "string",
                 "const": "messages"
               },
@@ -356,30 +370,36 @@
                   }
                 },
                 "additionalProperties": false,
-                "description": "Structured query language for listing messages"
+                "description": "Message query/filter to select source messages"
               },
               "include": {
+                "description": "Controls which message parts are included for processing",
                 "type": "object",
                 "properties": {
                   "body": {
                     "default": true,
+                    "description": "Include full message body",
                     "type": "boolean"
                   },
                   "headers": {
                     "default": true,
+                    "description": "Include message headers",
                     "type": "boolean"
                   },
                   "thread": {
                     "default": false,
+                    "description": "Include thread/context messages",
                     "type": "boolean"
                   },
                   "attachments": {
                     "default": false,
+                    "description": "Include attachment metadata",
                     "type": "boolean"
                   }
                 }
               },
               "limit": {
+                "description": "Maximum number of messages to process per run",
                 "type": "integer",
                 "exclusiveMinimum": 0,
                 "maximum": 10000
@@ -388,7 +408,7 @@
             "required": [
               "query"
             ],
-            "description": "Pipeline source definition"
+            "description": "Source query configuration for finding messages"
           },
           "process": {
             "minItems": 1,
@@ -925,15 +945,18 @@
                   "description": "Remove duplicate records based on field value equality"
                 }
               ]
-            }
+            },
+            "description": "Ordered list of processing steps (classify, extract, filter, map, validate, dedupe)"
           },
           "store": {
             "type": "object",
             "properties": {
               "collection": {
-                "type": "string"
+                "type": "string",
+                "description": "Target collection name to store processed records"
               },
               "key": {
+                "description": "Record key definition (defaults to collection key)",
                 "type": "object",
                 "properties": {
                   "fields": {
@@ -954,11 +977,11 @@
                 },
                 "required": [
                   "fields"
-                ],
-                "description": "Collection record key definition"
+                ]
               },
               "mode": {
                 "default": "upsert",
+                "description": "Storage mode: upsert updates existing records, insert only creates new, replace overwrites",
                 "type": "string",
                 "enum": [
                   "upsert",
@@ -967,6 +990,7 @@
                 ]
               },
               "review_if_confidence_below": {
+                "description": "If set, records with confidence below this threshold are stored for review instead of active",
                 "type": "number",
                 "minimum": 0,
                 "maximum": 1
@@ -974,7 +998,8 @@
             },
             "required": [
               "collection"
-            ]
+            ],
+            "description": "Target collection and storage options"
           },
           "runtime": {
             "description": "Runtime execution settings",
