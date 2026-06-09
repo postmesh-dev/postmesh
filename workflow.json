@@ -291,7 +291,8 @@
                           "type": "string"
                         }
                       }
-                    }
+                    },
+                    "additionalProperties": false
                   },
                   "sort": {
                     "description": "Sort specification",
@@ -315,7 +316,8 @@
                           "desc"
                         ]
                       }
-                    }
+                    },
+                    "additionalProperties": false
                   },
                   "page": {
                     "default": {
@@ -335,7 +337,8 @@
                         "description": "Opaque cursor returned from a previous page",
                         "type": "string"
                       }
-                    }
+                    },
+                    "additionalProperties": false
                   },
                   "select": {
                     "description": "Subset of message fields to return",
@@ -352,6 +355,7 @@
                     }
                   }
                 },
+                "additionalProperties": false,
                 "description": "Structured query language for listing messages"
               },
               "include": {
@@ -398,26 +402,31 @@
                       "type": "object",
                       "properties": {
                         "field": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Target field to store the classification result (e.g. data.kind)"
                         },
                         "enum": {
+                          "description": "Allowed classification values. The engine or regex rules must return one of these",
                           "type": "array",
                           "items": {
                             "type": "string"
                           }
                         },
                         "boolean": {
+                          "description": "When true, classify as true/false instead of using enum values",
                           "type": "boolean"
                         },
                         "instructions": {
+                          "description": "Natural language instructions for the engine, describing how to classify messages",
                           "type": "string"
                         },
                         "confidence_field": {
+                          "description": "Field to store the classification confidence score (0.0-1.0)",
                           "type": "string"
                         },
                         "using": {
                           "default": "engine",
-                          "description": "Execution strategy. regex uses deterministic regex rules. engine is reserved for the future processing engine.",
+                          "description": "Execution strategy. regex uses deterministic regex rules. engine uses the LLM for semantic judgement.",
                           "type": "string",
                           "enum": [
                             "regex",
@@ -603,7 +612,8 @@
                   },
                   "required": [
                     "classify"
-                  ]
+                  ],
+                  "description": "Classify messages into categories using regex rules or an LLM engine"
                 },
                 {
                   "type": "object",
@@ -612,6 +622,7 @@
                       "type": "object",
                       "properties": {
                         "schema": {
+                          "description": "Target collection schema (by name or inline) that defines which fields to extract",
                           "anyOf": [
                             {
                               "type": "string"
@@ -669,18 +680,26 @@
                           ]
                         },
                         "instructions": {
+                          "description": "Natural language instructions for the engine, describing what to extract and when to accept or reject",
                           "type": "string"
                         },
                         "evidence": {
                           "default": false,
+                          "description": "When true, store evidence quotes alongside extracted values for auditability",
                           "type": "boolean"
                         },
                         "confidence_field": {
+                          "description": "Field to store extraction confidence score (0.0-1.0)",
                           "type": "string"
+                        },
+                        "many": {
+                          "default": false,
+                          "description": "Allow extraction of multiple records from a single message",
+                          "type": "boolean"
                         },
                         "using": {
                           "default": "engine",
-                          "description": "Execution strategy. regex uses deterministic regex field extraction. engine is reserved for the future processing engine.",
+                          "description": "Execution strategy. regex uses deterministic regex patterns. engine uses the LLM for semantic extraction.",
                           "type": "string",
                           "enum": [
                             "regex",
@@ -783,7 +802,8 @@
                   },
                   "required": [
                     "extract"
-                  ]
+                  ],
+                  "description": "Extract structured fields from message content using regex or an LLM engine"
                 },
                 {
                   "type": "object",
@@ -796,7 +816,8 @@
                           "propertyNames": {
                             "type": "string"
                           },
-                          "additionalProperties": {}
+                          "additionalProperties": {},
+                          "description": "Filter conditions as field-value pairs. Records must match all conditions to pass through. Use an array for OR matching (e.g. folder_id: [inbox, archive]) and null to test for missing fields."
                         }
                       },
                       "required": [
@@ -806,7 +827,8 @@
                   },
                   "required": [
                     "filter"
-                  ]
+                  ],
+                  "description": "Remove records that don't match the specified conditions"
                 },
                 {
                   "type": "object",
@@ -821,7 +843,8 @@
                           },
                           "additionalProperties": {
                             "type": "string"
-                          }
+                          },
+                          "description": "Field mapping rules. Key is the target field (e.g. data.vendor), value is the source field (e.g. data.from_email). The source value is copied into the target field for every record. No pattern matching or AI — purely mechanical copy/rename."
                         }
                       },
                       "required": [
@@ -831,7 +854,8 @@
                   },
                   "required": [
                     "map"
-                  ]
+                  ],
+                  "description": "Copy or rename record fields without pattern matching or AI"
                 },
                 {
                   "type": "object",
@@ -841,6 +865,7 @@
                       "properties": {
                         "require": {
                           "default": [],
+                          "description": "List of fields that must be present. Records missing any of these trigger the on_error action",
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -848,6 +873,7 @@
                         },
                         "on_error": {
                           "default": "review",
+                          "description": "Action when required fields are missing: drop discards the record, review flags it for human review, fail aborts the pipeline with an error",
                           "type": "string",
                           "enum": [
                             "drop",
@@ -860,7 +886,8 @@
                   },
                   "required": [
                     "validate"
-                  ]
+                  ],
+                  "description": "Check that required fields are present and take action on missing fields"
                 },
                 {
                   "type": "object",
@@ -873,10 +900,12 @@
                           "type": "array",
                           "items": {
                             "type": "string"
-                          }
+                          },
+                          "description": "Fields to group by for deduplication. Records with the same values in all specified fields are considered duplicates"
                         },
                         "strategy": {
                           "default": "latest",
+                          "description": "Which record to keep from each group: first keeps the first encountered, latest keeps the most recent by received_at timestamp, merge combines all fields from all records in the group",
                           "type": "string",
                           "enum": [
                             "first",
@@ -892,7 +921,8 @@
                   },
                   "required": [
                     "dedupe"
-                  ]
+                  ],
+                  "description": "Remove duplicate records based on field value equality"
                 }
               ]
             }
