@@ -1,8 +1,14 @@
 {
-  "latestVersion": "0.5.0-rc.3",
-  "latestStable": "0.4.6",
+  "version": "0.5.0-rc.3",
+  "postmeshVersion": "0.5.0-rc.3",
   "releasedAt": "2026-06-09T17:14:33.401Z",
-  "releaseUrl": "https://github.com/postmesh-dev/postmesh/releases/tag/v0.5.0-rc.3",
+  "sourceRevision": "457aa729f3917909314229c5df4d166578c7065b",
+  "managedRuntime": {
+    "llamaCpp": "b9439"
+  },
+  "defaultModel": {
+    "id": "qwen3-1.7b"
+  },
   "assets": {
     "linux-x64": {
       "name": "postmesh-0.5.0-rc.3-linux-x64.tar.gz",
