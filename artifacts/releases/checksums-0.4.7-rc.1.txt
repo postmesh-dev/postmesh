@@ -1,0 +1,8 @@
+0b5b88f2f68348e84265291695040969dd9653957e457a4d89e91fd45c0b343d  postmesh-0.4.7-rc.1-linux-x64.tar.gz
+329b9716b22ae66cb38e9e8883e71eb2de9d7779227f11a0fc0dd17645ae6545  postmesh-0.4.7-rc.1-linux-arm64.tar.gz
+0bb9f75ad545b7c3b0997dcb7aaa4ad3ae61515dff74475441d0bd8c5c630f25  postmesh-0.4.7-rc.1-linux-x64-musl.tar.gz
+10d2ef232bcff5fdf1c83d776eb8c6710c3cf7276efc66893a1a98c9b70ff1a7  postmesh-0.4.7-rc.1-linux-arm64-musl.tar.gz
+d788f01e8f5c19f275c81c3d03460e629097aa0f07cac2f2fc50c9d53afb7bdd  postmesh-0.4.7-rc.1-windows-x64.zip
+6e2621a06b268d081a84bcb8beaaca46a3ed7dffced0ccfc4cb73581bd92496a  postmesh-0.4.7-rc.1-windows-arm64.zip
+567e1410b530f1554cc4cb27e6f39a43e198cf4b60f3ad12ce3d58709a77ad35  postmesh-0.4.7-rc.1-darwin-x64.tar.gz
+fce4375b8cf36f2aa3e0ffe73c5092cf634e146e8d9b04716fc781203ac1e057  postmesh-0.4.7-rc.1-darwin-arm64.tar.gz
