@@ -1013,6 +1013,15 @@
                   "deterministic",
                   "semantic"
                 ]
+              },
+              "model": {
+                "description": "LLM model to use for engine steps",
+                "type": "string",
+                "enum": [
+                  "qwen3-0.6b",
+                  "qwen3-1.7b",
+                  "phi-4-mini"
+                ]
               }
             }
           }
@@ -1037,6 +1046,15 @@
           "enum": [
             "deterministic",
             "semantic"
+          ]
+        },
+        "model": {
+          "description": "LLM model to use for engine steps",
+          "type": "string",
+          "enum": [
+            "qwen3-0.6b",
+            "qwen3-1.7b",
+            "phi-4-mini"
           ]
         }
       }
