@@ -170,21 +170,34 @@ SHELL_NAME="${SHELL##*/}"
 BASH_COMPLETIONS_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion/completions"
 ZSH_COMPLETIONS_DIR="${ZDOTDIR:-$HOME}/.zsh/completions"
 
+install_completion() {
+  local shell="$1"
+  local target="$2"
+  local tmpf="$TMP_DIR/${shell}-completion"
+  "$TARGET/$APP_NAME" completion --shell "$shell" > "$tmpf" 2>/dev/null || true
+  if ! cmp -s "$target" "$tmpf" 2>/dev/null; then
+    mv "$tmpf" "$target"
+    echo "  source $target"
+  else
+    rm -f "$tmpf"
+  fi
+}
+
 case "$SHELL_NAME" in
   bash)
     mkdir -p "$BASH_COMPLETIONS_DIR"
-    "$TARGET/$APP_NAME" completion --shell bash > "$BASH_COMPLETIONS_DIR/$APP_NAME" 2>/dev/null && echo "Installed bash completion to $BASH_COMPLETIONS_DIR/$APP_NAME" || true
+    install_completion bash "$BASH_COMPLETIONS_DIR/$APP_NAME"
     ;;
   zsh)
     mkdir -p "$ZSH_COMPLETIONS_DIR"
-    "$TARGET/$APP_NAME" completion --shell zsh > "$ZSH_COMPLETIONS_DIR/_$APP_NAME" 2>/dev/null && echo "Installed zsh completion to $ZSH_COMPLETIONS_DIR/_$APP_NAME" || true
+    install_completion zsh "$ZSH_COMPLETIONS_DIR/_$APP_NAME"
     ;;
   *)
     # Unknown shell — install both as best-effort
     mkdir -p "$BASH_COMPLETIONS_DIR"
-    "$TARGET/$APP_NAME" completion --shell bash > "$BASH_COMPLETIONS_DIR/$APP_NAME" 2>/dev/null && echo "Installed bash completion to $BASH_COMPLETIONS_DIR/$APP_NAME" || true
+    install_completion bash "$BASH_COMPLETIONS_DIR/$APP_NAME"
     mkdir -p "$ZSH_COMPLETIONS_DIR"
-    "$TARGET/$APP_NAME" completion --shell zsh > "$ZSH_COMPLETIONS_DIR/_$APP_NAME" 2>/dev/null && echo "Installed zsh completion to $ZSH_COMPLETIONS_DIR/_$APP_NAME" || true
+    install_completion zsh "$ZSH_COMPLETIONS_DIR/_$APP_NAME"
     ;;
 esac
 
@@ -200,7 +213,6 @@ mkdir -p "$INSTALL_DIR"
 mv "$INSTALL_JSON_TMP" "$INSTALL_JSON"
 
 echo "Installed $APP_NAME v$DESIRED_VERSION to $SYMLINK"
-echo "Shell completions installed for bash and zsh."
 
 case ":$PATH:" in
   *":$INSTALL_DIR:"*)
