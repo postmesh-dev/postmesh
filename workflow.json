@@ -945,6 +945,21 @@
             "required": [
               "collection"
             ]
+          },
+          "runtime": {
+            "description": "Runtime execution settings",
+            "type": "object",
+            "properties": {
+              "policy": {
+                "default": "semantic",
+                "description": "Runtime execution policy",
+                "type": "string",
+                "enum": [
+                  "deterministic",
+                  "semantic"
+                ]
+              }
+            }
           }
         },
         "required": [
@@ -954,6 +969,21 @@
           "store"
         ],
         "description": "Declarative pipeline definition"
+      }
+    },
+    "runtime": {
+      "description": "Runtime execution settings",
+      "type": "object",
+      "properties": {
+        "policy": {
+          "default": "semantic",
+          "description": "Runtime execution policy",
+          "type": "string",
+          "enum": [
+            "deterministic",
+            "semantic"
+          ]
+        }
       }
     }
   },
