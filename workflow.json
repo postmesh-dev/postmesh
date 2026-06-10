@@ -436,8 +436,8 @@
                           "description": "When true, classify as true/false instead of using enum values",
                           "type": "boolean"
                         },
-                        "instructions": {
-                          "description": "Natural language instructions for the engine, describing how to classify messages",
+                        "goal": {
+                          "description": "Describes what to look for — e.g. 'Classify promotional emails as coupon'",
                           "type": "string"
                         },
                         "confidence_field": {
@@ -699,8 +699,8 @@
                             }
                           ]
                         },
-                        "instructions": {
-                          "description": "Natural language instructions for the engine, describing what to extract and when to accept or reject",
+                        "goal": {
+                          "description": "Describes what to extract — e.g. 'Extract the vendor name and dollar amount'",
                           "type": "string"
                         },
                         "evidence": {

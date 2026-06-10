@@ -1,0 +1,8 @@
+d61cbbced87644c9f2b65a86e1951e0d1b458da1cd3ad30da34f5c444b5878ff  postmesh-0.5.0-rc.7-linux-x64.tar.gz
+4ae88c011f83731e7e4f9356d90a8498ade9ad31bd1595dc94be35c9c5d1a2fd  postmesh-0.5.0-rc.7-linux-arm64.tar.gz
+ed214724940e462f730262b8233b9aed156157bf04c611ce23cfc5fa763c11bb  postmesh-0.5.0-rc.7-linux-x64-musl.tar.gz
+3b25c0f43359d0b8eb765c88db2baac80e1dea3b20298ce97010291d3c778af4  postmesh-0.5.0-rc.7-linux-arm64-musl.tar.gz
+f66a37a1c3b38b413c959853966cbbf520e5f7fbcc62094191382a7d3d2b5b61  postmesh-0.5.0-rc.7-windows-x64.zip
+65b64a72f6e10bf0aa4a27ad32d31e3b24cadc9ed51cd5084af6dada27a28ccf  postmesh-0.5.0-rc.7-windows-arm64.zip
+e20063fcb44f976c2b09f8d277463006d467971b1a14e30ec5b59a00242ade1d  postmesh-0.5.0-rc.7-darwin-x64.tar.gz
+36a1004b422740e7ab48f4a3b508ea500da7f834c711f7c527d797c1390b6af7  postmesh-0.5.0-rc.7-darwin-arm64.tar.gz
