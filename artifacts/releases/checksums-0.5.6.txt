@@ -1,0 +1,8 @@
+1dedc064c39f710b7cb8f33de131216a0554abddbd7a762b7b6b2fa32704da2b  postmesh-0.5.6-linux-x64.tar.gz
+7e19a1c156e1ccec61e44cb98737714222fee0bbe6aa4786dc08310730f1d95c  postmesh-0.5.6-linux-arm64.tar.gz
+975a360e376d861753946ec51244c649c8a522f6adafd7fad8c93d54f2c4d75b  postmesh-0.5.6-linux-x64-musl.tar.gz
+0574f13480da4243a71e456e46bc8940c10b27bc420d01ed81dc6fa7dba17c45  postmesh-0.5.6-linux-arm64-musl.tar.gz
+b49123c664d77ea6d00e5576883353f8c3721513780ef2388fe0ff93ee450070  postmesh-0.5.6-windows-x64.zip
+6813eaa198019ebd9638c72441e0f2ae0c02218d728ae0cdafe6ec61ad87a536  postmesh-0.5.6-windows-arm64.zip
+4fec2992877671c2a4de22de15e996345af8fb1e01a38b746eafe3b9844904b9  postmesh-0.5.6-darwin-x64.tar.gz
+c9ad5843f839a10876d22c01211f220eadb482748d455ac2256dc8741eb7d2b1  postmesh-0.5.6-darwin-arm64.tar.gz

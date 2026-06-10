@@ -1,8 +1,14 @@
 {
-  "latestVersion": "0.5.6",
-  "latestStable": "0.5.6",
+  "version": "0.5.6",
+  "postmeshVersion": "0.5.6",
   "releasedAt": "2026-06-10T19:54:18.304Z",
-  "releaseUrl": "https://github.com/postmesh-dev/postmesh/releases/tag/v0.5.6",
+  "sourceRevision": "a70d7f525edc636f64282491aedd4c22d5f2b2a3",
+  "managedRuntime": {
+    "llamaCpp": "b9439"
+  },
+  "defaultModel": {
+    "id": "qwen3-1.7b"
+  },
   "assets": {
     "linux-x64": {
       "name": "postmesh-0.5.6-linux-x64.tar.gz",
