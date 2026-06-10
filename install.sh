@@ -103,6 +103,12 @@ trap 'rm -rf "$TMP_DIR"' EXIT
 
 if [ -n "${POSTMESH_INSTALL_ARCHIVE:-}" ]; then
   cp "$POSTMESH_INSTALL_ARCHIVE" "$TMP_DIR/$DESIRED_ASSET"
+elif [ -n "${POSTMESH_ARCHIVE_DIR:-}" ]; then
+  if [ ! -f "$POSTMESH_ARCHIVE_DIR/$DESIRED_ASSET" ]; then
+    echo "Archive not found: $POSTMESH_ARCHIVE_DIR/$DESIRED_ASSET" >&2
+    exit 1
+  fi
+  cp "$POSTMESH_ARCHIVE_DIR/$DESIRED_ASSET" "$TMP_DIR/$DESIRED_ASSET"
 else
   echo "Downloading $APP_NAME v$DESIRED_VERSION for $PLATFORM_KEY..."
   curl -fsSL "$DESIRED_URL" -o "$TMP_DIR/$DESIRED_ASSET"
