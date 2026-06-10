@@ -70,11 +70,12 @@ Global flags:
 | --- | --- | --- |
 | `-o`, `--output` | `json` or `pretty` | Output format. Defaults to `pretty` on a terminal and `json` when piped |
 | `--email` | `email` or `all` | Target a specific account or all configured accounts |
+| `--namespace` | `text` | Namespace for scoped resource lookup |
 | `-f`, `--file` | `path` or `-` | Read input from file or stdin and merge it with CLI flags |
 
 Account management:
 
-- `postmesh accounts add` — OAuth connect (alias for `connect`)
+- `postmesh connect` — OAuth connect (`--provider gmail|outlook`)
 - `postmesh accounts list` — List configured accounts
 - `postmesh accounts remove` — Remove an account
 - `postmesh accounts update` — Update nickname
@@ -92,6 +93,8 @@ Workflows:
 - `postmesh workflows apply` — Validate and install a workflow bundle
 - `postmesh workflows diff` — Show what a bundle would change
 - `postmesh workflows export` — Export installed collections and pipelines
+- `postmesh workflows templates` — List embedded workflow templates
+- `postmesh workflows show-template` — Show an embedded template's YAML
 
 Collections:
 
@@ -111,6 +114,7 @@ Pipelines:
 - `postmesh pipelines update` — Update pipeline definition
 - `postmesh pipelines enable / disable` — Toggle pipeline state
 - `postmesh pipelines run` — Execute a pipeline
+- `postmesh pipelines reset` — Delete pipeline-produced records by status or run
 - `postmesh pipelines delete` — Delete a pipeline
 
 Records:
@@ -120,8 +124,8 @@ Records:
 
 Other:
 
-- `postmesh model` — Select or list available AI models
 - `postmesh doctor` — Run system diagnostics
+- `postmesh completion` — Generate shell completion scripts (`--shell bash|zsh`)
 - `postmesh help` — Show usage help
 
 ## Mail query interface
@@ -299,7 +303,11 @@ pipelines:
 ```
 
 ```bash
+# Apply from a YAML file
 postmesh workflows apply -f coupon-vault.yaml
+
+# Or use an embedded template
+postmesh workflows apply --template coupons
 postmesh pipelines run coupons
 postmesh records list --collection coupons
 ```
