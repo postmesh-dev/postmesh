@@ -1,48 +1,48 @@
 {
   "latestVersion": "0.5.2",
   "latestStable": "0.5.2",
-  "releasedAt": "2026-06-10T16:10:56.257Z",
+  "releasedAt": "2026-06-10T17:49:38.764Z",
   "releaseUrl": "https://github.com/postmesh-dev/postmesh/releases/tag/v0.5.2",
   "assets": {
     "linux-x64": {
       "name": "postmesh-0.5.2-linux-x64.tar.gz",
       "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.5.2/postmesh-0.5.2-linux-x64.tar.gz",
-      "sha256": "a208fa8ad0a3a7f9cb822a01e6bed87ce638cff153272fbdcb707de11530bf4a"
+      "sha256": "768e2534c42f7d9e4f18ea692edbe5137ecb365ace57480993c92a30bf3055ff"
     },
     "linux-arm64": {
       "name": "postmesh-0.5.2-linux-arm64.tar.gz",
       "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.5.2/postmesh-0.5.2-linux-arm64.tar.gz",
-      "sha256": "9a812f3f352fac4e95195fad973794f0de59d61d7c964a74aa4bd2c3ccf0d1c1"
+      "sha256": "c1679aa62caf8160f4b9bb081b19d7401cc0b2a4ef8ce4b9ec0a70e178628453"
     },
     "linux-x64-musl": {
       "name": "postmesh-0.5.2-linux-x64-musl.tar.gz",
       "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.5.2/postmesh-0.5.2-linux-x64-musl.tar.gz",
-      "sha256": "9387ef06c4b116d84417564eb97496a413ee3a089761d8777faec161afa67a88"
+      "sha256": "fc5d5c3bcccc5f0901be4609241328e58aaa09d8da0d4226a6f94a168cedb3a5"
     },
     "linux-arm64-musl": {
       "name": "postmesh-0.5.2-linux-arm64-musl.tar.gz",
       "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.5.2/postmesh-0.5.2-linux-arm64-musl.tar.gz",
-      "sha256": "083ffb620eef06d790d83e4fb1f116206061a1022852c4ff3f212b575da320c8"
+      "sha256": "0ac40c848487c0469f134006deab7c82f9ead3699ff91ba52940f1df1d0d16b0"
     },
     "windows-x64": {
       "name": "postmesh-0.5.2-windows-x64.zip",
       "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.5.2/postmesh-0.5.2-windows-x64.zip",
-      "sha256": "c51d0a64f6efd16eea4c55c2c2a019becad659fcded6a1c47c59a0f23eb596ee"
+      "sha256": "6e0d6d4cb000d4d4cdf146856040cbcf48ce8e5d34f180b6a4428c84683b6ef7"
     },
     "windows-arm64": {
       "name": "postmesh-0.5.2-windows-arm64.zip",
       "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.5.2/postmesh-0.5.2-windows-arm64.zip",
-      "sha256": "d4c6806fb291cb2395937341c1f4f5b9179a2bc387089f8bcab12f3f5de0bf19"
+      "sha256": "2179d2a0d33005d9567796a0806e84693f388c4eaf6494545a4725f66bac5720"
     },
     "darwin-x64": {
       "name": "postmesh-0.5.2-darwin-x64.tar.gz",
       "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.5.2/postmesh-0.5.2-darwin-x64.tar.gz",
-      "sha256": "479c58625514a734809e7d3dc932ef633dea4fe37ae7be501f4e2a4ced5f50c3"
+      "sha256": "88e064b4c2b39a79699d0f4c03dc0d0c9c565687c702bea0c102e1922bbd8460"
     },
     "darwin-arm64": {
       "name": "postmesh-0.5.2-darwin-arm64.tar.gz",
       "url": "https://github.com/postmesh-dev/postmesh/releases/download/v0.5.2/postmesh-0.5.2-darwin-arm64.tar.gz",
-      "sha256": "ed8b45be359401640c3cb18d40495fb131fcc425e98be50da88062867ae5b3b3"
+      "sha256": "451d8885f83f5c63393cc6156eb444d1cfb1f0b409a33e68d1efaa3485a75008"
     }
   }
 }
