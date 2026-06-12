@@ -611,6 +611,48 @@
                                   "any",
                                   "all"
                                 ]
+                              },
+                              "weight": {
+                                "description": "Explicit score weight for this rule (0-1). Overrides precision-based default.",
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 1
+                              },
+                              "precision": {
+                                "description": "Precision level that maps to a default weight (0.95/0.75/0.45)",
+                                "type": "string",
+                                "enum": [
+                                  "high",
+                                  "medium",
+                                  "low"
+                                ]
+                              },
+                              "negative": {
+                                "default": false,
+                                "description": "When true, this rule subtracts from the label score instead of adding to it",
+                                "type": "boolean"
+                              },
+                              "negative_for": {
+                                "description": "When set, this rule subtracts from the listed target labels instead of the rule's own label",
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "final": {
+                                "default": false,
+                                "description": "When true and no conflicting evidence, this rule determines the label deterministically",
+                                "type": "boolean"
+                              },
+                              "priority": {
+                                "description": "Higher priority rules are evaluated first. Used for tie-breaking between rules.",
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              },
+                              "reason": {
+                                "description": "Human-readable explanation shown in debug output and compact prompts",
+                                "type": "string"
                               }
                             },
                             "required": [
