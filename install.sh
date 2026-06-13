@@ -183,7 +183,11 @@ install_completion() {
   "$TARGET/$APP_NAME" completion --shell "$shell" > "$tmpf" 2>/dev/null || true
   if ! cmp -s "$target" "$tmpf" 2>/dev/null; then
     mv "$tmpf" "$target"
-    echo "  source $target"
+    if [ "$shell" = "zsh" ]; then
+      echo "  fpath+=\"$ZSH_COMPLETIONS_DIR\"  # add to ~/.zshrc before compinit"
+    else
+      echo "  source $target"
+    fi
   else
     rm -f "$tmpf"
   fi
