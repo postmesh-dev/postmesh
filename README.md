@@ -291,7 +291,7 @@ postmesh records get --collection coupons --record-key 'msg1:SAVE20'
 A workflow bundles a collection and its pipeline together:
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/postmesh-dev/postmesh-public/main/workflow.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/postmesh-dev/postmesh/main/workflow.json
 namespace: postmesh
 name: coupons
 description: Extract coupon codes and discounts from mail.
