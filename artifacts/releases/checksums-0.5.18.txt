@@ -1,0 +1,8 @@
+82deba0e5bcfa8247e3ff043e91b837b8bbe73554b29fbaa50159c4952761364  postmesh-0.5.18-linux-x64.tar.gz
+4de3149ab75bc27112d6746f77dc6a24215e3a11dcf067e00924c977bd05d28c  postmesh-0.5.18-linux-arm64.tar.gz
+1039037f10a7b3217b34df6950d69a10cd7fd360f4f6d8cc5c612c7750bf778a  postmesh-0.5.18-linux-x64-musl.tar.gz
+76790ee1fa883a294f0c205c57a85063177e14722d684ece2a46b28d8cebbe0a  postmesh-0.5.18-linux-arm64-musl.tar.gz
+aa3cad24af910eaabae18eb317e99b584d7e864adde9b2281553201296abfa3e  postmesh-0.5.18-windows-x64.zip
+6963b383ed62bb836e1177e50607a140ea832fcf4a115fc2add23664d80cbb6a  postmesh-0.5.18-windows-arm64.zip
+be76c0668efbaab522bf06f3eb82dcb96bfc83b1463b77f7793834ce19cb0e1d  postmesh-0.5.18-darwin-x64.tar.gz
+937cba3e29443d6e9b840af76ef51ebc00a7b6967f24a8ea51172f3026d60bfc  postmesh-0.5.18-darwin-arm64.tar.gz
