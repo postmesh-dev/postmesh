@@ -96,7 +96,7 @@ Account management:
 Messages:
 
 - `postmesh messages list` — Search messages with structured filters (`--email`)
-- `postmesh messages get` — Get a single message by ID (`--email`)
+- `postmesh messages get` — Get a single message by ID
 - `postmesh thread messages` — Get all messages in a thread
 
 Workflows:
