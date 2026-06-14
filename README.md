@@ -46,7 +46,8 @@ postmesh messages list \
   --filter.query invoice
 
 # Define a collection and extract records via a pipeline
-postmesh workflows apply -f examples/workflows/coupon-vault.yaml
+postmesh workflows apply --template coupons
+postmesh pipelines run coupons
 
 # Query extracted records
 postmesh records list --collection coupons \
