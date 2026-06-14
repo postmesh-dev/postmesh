@@ -1,8 +1,14 @@
 {
-  "latestVersion": "0.5.24-rc.4",
-  "latestStable": "0.5.23",
+  "version": "0.5.24-rc.4",
+  "postmeshVersion": "0.5.24-rc.4",
   "releasedAt": "2026-06-14T23:03:52.119Z",
-  "releaseUrl": "https://github.com/postmesh-dev/postmesh/releases/tag/v0.5.24-rc.4",
+  "sourceRevision": "6c71cfea5447c9e7a8c8d9f941e553a6409aeedb",
+  "managedRuntime": {
+    "llamaCpp": "b9439"
+  },
+  "defaultModel": {
+    "id": "qwen3-1.7b"
+  },
   "assets": {
     "linux-x64": {
       "name": "postmesh-0.5.24-rc.4-linux-x64.tar.gz",
