@@ -70,7 +70,6 @@ Global flags:
 | Flag | Type | Description |
 | --- | --- | --- |
 | `-o`, `--output` | `json` or `pretty` | Output format. Defaults to `pretty` on a terminal and `json` when piped |
-| `--email` | `text` | Target a specific account by email, or `all`/`*` for all accounts |
 | `--namespace` | `text` | Namespace for scoped resource lookup |
 | `-f`, `--file` | `path` or `-` | Read input from file or stdin and merge it with CLI flags |
 | `--template` | `name` | Use embedded workflow template (for `workflows apply`) |
@@ -91,13 +90,13 @@ Account management:
 - `postmesh accounts list` — List configured accounts
 - `postmesh accounts remove` — Remove an account (`--delete-db`, `--delete-records`)
 - `postmesh accounts update` — Update nickname
-- `postmesh accounts sync` — Sync messages (`--full`, `--since 90d`, `--show-new 5`)
+- `postmesh accounts sync` — Sync messages (`--email`, `--full`, `--since 90d`, `--show-new 5`)
 - `postmesh sync` — Shortcut for `postmesh accounts sync`
 
 Messages:
 
-- `postmesh messages list` — Search messages with structured filters
-- `postmesh messages get` — Get a single message by ID
+- `postmesh messages list` — Search messages with structured filters (`--email`)
+- `postmesh messages get` — Get a single message by ID (`--email`)
 - `postmesh thread messages` — Get all messages in a thread
 
 Workflows:
@@ -191,10 +190,11 @@ Run that JSON query with:
 postmesh -f ./mail-query.json messages list
 ```
 
-Supported `messages list` filters:
+Supported `messages list` flags:
 
 | Flag | Description |
 | --- | --- |
+| `--email` | Target a specific account by email, or `all`/`*` for all accounts |
 | `--filter.from` | Sender email address(es) |
 | `--filter.to` | Recipient email address(es) |
 | `--filter.subject` | Subject keywords |
