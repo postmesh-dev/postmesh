@@ -42,7 +42,7 @@ postmesh messages list --page.limit 10
 # Query with explicit filters
 postmesh messages list \
   --filter.from billing@example.com \
-  --filter.received_at.gte 2026-06-01T00:00:00Z \
+  --filter.received-at.gte 2026-06-01T00:00:00Z \
   --filter.query invoice
 
 # Define a collection and extract records via a pipeline
@@ -50,7 +50,7 @@ postmesh workflows apply -f examples/workflows/coupon-vault.yaml
 
 # Query extracted records
 postmesh records list --collection coupons \
-  --where 'data.vendor=Acme' \
+  --where.data.vendor Acme \
   --select 'data.code,data.discount'
 ```
 
@@ -69,17 +69,29 @@ Global flags:
 | Flag | Type | Description |
 | --- | --- | --- |
 | `-o`, `--output` | `json` or `pretty` | Output format. Defaults to `pretty` on a terminal and `json` when piped |
-| `--email` | `email` or `all` | Target a specific account or all configured accounts |
+| `--email` | `text` | Target a specific account by email, or `all`/`*` for all accounts |
 | `--namespace` | `text` | Namespace for scoped resource lookup |
 | `-f`, `--file` | `path` or `-` | Read input from file or stdin and merge it with CLI flags |
+| `--template` | `name` | Use embedded workflow template (for `workflows apply`) |
+
+Resource names take three forms:
+
+| Form | Example |
+| --- | --- |
+| Short | `my-pipe` |
+| Namespace-prefixed | `custom:my-pipe` |
+| Fully-qualified | `@namespace/workflow:my-pipe` |
 
 Account management:
 
-- `postmesh connect` — OAuth connect (`--provider gmail|outlook`)
+- `postmesh connect` — OAuth connect (`--provider gmail|outlook`, `--nickname`)
+- `postmesh connect --session <id>` — Complete a pending auth session
+- `postmesh connect --session <id> --async` — Single non-blocking poll
 - `postmesh accounts list` — List configured accounts
-- `postmesh accounts remove` — Remove an account
+- `postmesh accounts remove` — Remove an account (`--delete-db`, `--delete-records`)
 - `postmesh accounts update` — Update nickname
-- `postmesh accounts sync` — Sync messages for one or all accounts
+- `postmesh accounts sync` — Sync messages (`--full`, `--since 90d`, `--show-new 5`)
+- `postmesh sync` — Shortcut for `postmesh accounts sync`
 
 Messages:
 
@@ -102,7 +114,7 @@ Collections:
 - `postmesh collections describe` — Show schema, key, indexes, record count
 - `postmesh collections create` — Create a standalone collection
 - `postmesh collections update` — Update collection definition
-- `postmesh collections delete` — Delete a collection
+- `postmesh collections delete` — Delete a collection (`--keep-records`, `--delete-records`, `--yes`)
 - `postmesh collections reindex` — Recreate indexes
 
 Pipelines:
@@ -113,8 +125,8 @@ Pipelines:
 - `postmesh pipelines create` — Create a standalone pipeline
 - `postmesh pipelines update` — Update pipeline definition
 - `postmesh pipelines enable / disable` — Toggle pipeline state
-- `postmesh pipelines run` — Execute a pipeline
-- `postmesh pipelines reset` — Delete pipeline-produced records by status or run
+- `postmesh pipelines run` — Execute a pipeline (`--dry-run`, `--debug`, `--reset`, `--runtime.policy`, `--runtime.model`, `--source.limit`)
+- `postmesh pipelines reset` — Delete pipeline-produced records by status or run (`--dry-run`, `--status`, `--run-id`, `--yes`)
 - `postmesh pipelines delete` — Delete a pipeline
 
 Records:
@@ -126,6 +138,7 @@ Other:
 
 - `postmesh doctor` — Run system diagnostics
 - `postmesh completion` — Generate shell completion scripts (`--shell bash|zsh`)
+- `postmesh version` — Show version
 - `postmesh help` — Show usage help
 
 ## Mail query interface
@@ -137,7 +150,7 @@ CLI example:
 ```bash
 postmesh messages list \
   --filter.from notifications@example.com \
-  --filter.is_read false \
+  --filter.is-read false \
   --sort.field received_at \
   --sort.order desc \
   --page.limit 20
@@ -181,19 +194,21 @@ Supported `messages list` filters:
 
 | Flag | Description |
 | --- | --- |
-| `--filter.from` | Sender email address |
-| `--filter.to` | Recipient email address |
+| `--filter.from` | Sender email address(es) |
+| `--filter.to` | Recipient email address(es) |
 | `--filter.subject` | Subject keywords |
 | `--filter.body` | Body-preview keywords |
-| `--filter.received_at.gte` | Received-at lower bound |
-| `--filter.received_at.lte` | Received-at upper bound |
-| `--filter.is_read` | Read-state filter |
+| `--filter.received-at.gte` | Received-at lower bound |
+| `--filter.received-at.lte` | Received-at upper bound |
+| `--filter.is-read` | Read-state filter |
 | `--filter.folder` | Folder identifier |
-| `--filter.query` | Full-text search query |
+| `--filter.labels` | Gmail labels |
+| `--filter.query` | Full-text search query (FTS5) |
 | `--sort.field` | `received_at` or `last_modified` |
 | `--sort.order` | `asc` or `desc` |
 | `--page.limit` | Maximum rows, `1-100` |
 | `--page.cursor` | Cursor returned by a previous page |
+| `--select` | Field subset (`id`, `subject`, `from_email`, `body_preview`, `received_at`) |
 
 Pagination:
 
@@ -218,7 +233,7 @@ shape:
 | `source.message_id` | `source.message_id` | Source email reference |
 | `pipeline.name` | `pipeline.name` | Pipeline that stored the record |
 
-This scheme applies to `--where`, `--select`, and `--sort.field`.
+This scheme applies to `--where.*`, `--select`, and `--sort.field`.
 
 ### Querying records
 
@@ -226,15 +241,15 @@ This scheme applies to `--where`, `--select`, and `--sort.field`.
 # List all records
 postmesh records list --collection coupons
 
-# Filter by data field
-postmesh records list --collection coupons --where 'data.vendor=Acme'
+# Filter by data field (equality)
+postmesh records list --collection coupons --where.data.vendor Acme
 
 # Filter with operators
 postmesh records list --collection coupons \
-  --where 'data.discount_value' '{ "gte": 20 }'
+  --where.data.discount-value.gte 20
 
 # Filter by system field
-postmesh records list --collection coupons --where 'status=review'
+postmesh records list --collection coupons --where.status review
 
 # Select specific fields
 postmesh records list --collection coupons \
@@ -249,10 +264,25 @@ postmesh records list --collection coupons --page.limit 10
 postmesh records list --collection coupons --page.cursor <cursor>
 ```
 
+Supported `--where.*` operators:
+
+| Suffix | Example | Description |
+| --- | --- | --- |
+| _(none)_ | `--where.data.vendor Acme` | Equality |
+| `.eq` | `--where.data.vendor.eq Acme` | Explicit equality |
+| `.ne` | `--where.data.vendor.ne Acme` | Not equal |
+| `.gt` | `--where.data.amount.gt 100` | Greater than |
+| `.gte` | `--where.data.amount.gte 50` | Greater than or equal |
+| `.lt` | `--where.data.amount.lt 200` | Less than |
+| `.lte` | `--where.data.amount.lte 150` | Less than or equal |
+| `.in` | `--where.data.status.in active,pending` | Member of list |
+| `.contains` | `--where.data.vendor.contains acme` | Substring match |
+| `.exists` | `--where.data.expiry-date.exists true` | Field presence |
+
 ### Getting a single record
 
 ```bash
-postmesh records get --collection coupons --record_key 'msg1:SAVE20'
+postmesh records get --collection coupons --record-key 'msg1:SAVE20'
 ```
 
 ## Workflows
@@ -260,46 +290,86 @@ postmesh records get --collection coupons --record_key 'msg1:SAVE20'
 A workflow bundles a collection and its pipeline together:
 
 ```yaml
-name: coupon-vault
+namespace: postmesh
+name: coupons
+description: Extract coupon codes and discounts from mail.
+
 collections:
   coupons:
     name: coupons
+    description: Coupon and promo-code records extracted from email.
     schema:
       vendor:
         type: string
         required: true
+        indexed: true
       code:
         type: string
         required: true
+        indexed: true
       discount:
         type: string
+      discount_value:
+        type: number
+      expiry_date:
+        type: date
+        indexed: true
+      category:
+        type: string
+      source_message_id:
+        type: string
+        required: true
+      confidence:
+        type: number
     key:
       fields: [source_message_id, code]
+    indexes:
+      - fields: [vendor]
+      - fields: [expiry_date]
+
 pipelines:
   coupons:
     name: coupons
+    description: Find checkout coupon codes and extract offer details.
     source:
       query:
         filter:
-          query: "coupon OR promo OR discount"
+          query: '"promo code" OR "coupon code" OR "discount code"'
+        page:
+          limit: 100
+      include:
+        body: true
     process:
       - classify:
-          field: data.kind
-          using: regex
-          enum: [coupon, promotion, other]
+          field: kind
+          using: engine
+          enum: [coupon, other]
+          default: other
+          goal: |
+            Classify whether this message contains a redeemable checkout code.
       - filter:
           where:
-            data.kind: [coupon, promotion]
+            kind: coupon
       - extract:
-          using: regex
-          fields:
-            data.code:
-              input: text
-              pattern: '(?:code)[:\s]+([A-Z0-9]+)'
+          schema: coupons
+          using: engine
+          evidence: true
+          many: true
+          goal: |
+            Extract vendor, code, discount, expiry_date and category
+            from the checkout coupon email.
       - validate:
-          require: [data.vendor, data.code, data.source_message_id]
+          require: [vendor, code, source_message_id]
+          on_error: review
+      - dedupe:
+          by: [source_message_id, code]
+          strategy: latest
     store:
       collection: coupons
+      mode: upsert
+      review_if_confidence_below: 0.65
+    runtime:
+      policy: semantic
 ```
 
 ```bash
@@ -347,14 +417,14 @@ Example `messages list` JSON:
   "messages": [
     {
       "id": "msg_abc123",
+      "account": "you@example.com",
       "subject": "Your June invoice",
       "from": "billing@example.com",
       "to": ["you@example.com"],
       "received_at": "2026-06-02T14:30:00Z",
       "snippet": "Your invoice is ready...",
       "is_read": true,
-      "folder_id": "inbox",
-      "conversation_id": "conv_456"
+      "folder_id": "inbox"
     }
   ],
   "next_cursor": "opaque-cursor"
@@ -377,11 +447,19 @@ Example `records list` JSON:
       },
       "status": "active",
       "created_at": "2026-06-07T12:00:00Z",
-      "updated_at": "2026-06-07T12:00:00Z"
+      "updated_at": "2026-06-07T12:00:00Z",
+      "confidence": 0.92,
+      "source": {
+        "message_id": "msg_abc123"
+      },
+      "pipeline": {
+        "name": "coupons"
+      }
     }
   ],
   "page": {
     "limit": 50,
+    "next_cursor": "opaque-cursor",
     "has_more": false
   }
 }
