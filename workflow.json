@@ -41,7 +41,8 @@
           },
           "description": {
             "description": "Human-readable description of this collection",
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "version": {
             "default": 1,
@@ -97,7 +98,9 @@
                   "type": "boolean"
                 },
                 "description": {
-                  "type": "string"
+                  "description": "Human-readable description of this field",
+                  "type": "string",
+                  "minLength": 1
                 },
                 "enum": {
                   "type": "array",
@@ -719,7 +722,9 @@
                                     "type": "boolean"
                                   },
                                   "description": {
-                                    "type": "string"
+                                    "description": "Human-readable description of this field",
+                                    "type": "string",
+                                    "minLength": 1
                                   },
                                   "enum": {
                                     "type": "array",
