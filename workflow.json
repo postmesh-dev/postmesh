@@ -40,9 +40,9 @@
             "description": "Collection name"
           },
           "description": {
-            "description": "Human-readable description of this collection",
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "description": "Human-readable description of this collection"
           },
           "version": {
             "default": 1,
@@ -98,9 +98,9 @@
                   "type": "boolean"
                 },
                 "description": {
-                  "description": "Human-readable description of this field",
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "Human-readable description of this field"
                 },
                 "enum": {
                   "type": "array",
@@ -115,7 +115,8 @@
                 }
               },
               "required": [
-                "type"
+                "type",
+                "description"
               ],
               "description": "Schema definition for a single collection field"
             },
@@ -186,6 +187,7 @@
         },
         "required": [
           "name",
+          "description",
           "schema",
           "key"
         ],
@@ -722,9 +724,9 @@
                                     "type": "boolean"
                                   },
                                   "description": {
-                                    "description": "Human-readable description of this field",
                                     "type": "string",
-                                    "minLength": 1
+                                    "minLength": 1,
+                                    "description": "Human-readable description of this field"
                                   },
                                   "enum": {
                                     "type": "array",
@@ -739,7 +741,8 @@
                                   }
                                 },
                                 "required": [
-                                  "type"
+                                  "type",
+                                  "description"
                                 ],
                                 "description": "Schema definition for a single collection field"
                               }
